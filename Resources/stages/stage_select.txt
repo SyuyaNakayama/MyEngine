@@ -1,0 +1,17 @@
+wall scale(50 10 24) pos(0 -11 0) texture(1)
+start pos(0 0 -20)
+
+// ステージを囲う壁
+wall pos(0 -1 34) scale(70 20 10)
+wall pos(0 -1 -34) scale(70 20 10)
+wall pos(60 -1 0) scale(10 20 24)
+wall pos(-60 -1 0) scale(10 20 24)
+
+sldoor pos(-30 0 24)
+sldoor pos(-10 0 24)
+sldoor pos(10 0 24)
+sldoor pos(30 0 24)
+candle pos(-30 0 12)
+candle pos(-10 0 12)
+candle pos(10 0 12)
+candle pos(30 0 12)

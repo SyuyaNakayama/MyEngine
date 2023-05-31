@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TeamDevelopment", "TeamDevelopment.vcxproj", "{8119C8A4-CBE2-4A2D-8427-1C7A5AA0A0D7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{0DC5AA4F-0AA1-4F63-ADC1-132C2AABBB08}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "External\imgui\imgui.vcxproj", "{AEB46CE2-7E04-41A7-9C7D-2DD82E23A1C4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTex", "External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj", "{371B9FA9-4C90-4AC6-A123-ACED756D6C77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8119C8A4-CBE2-4A2D-8427-1C7A5AA0A0D7}.Debug|x64.ActiveCfg = Debug|x64
+		{8119C8A4-CBE2-4A2D-8427-1C7A5AA0A0D7}.Debug|x64.Build.0 = Debug|x64
+		{8119C8A4-CBE2-4A2D-8427-1C7A5AA0A0D7}.Release|x64.ActiveCfg = Release|x64
+		{8119C8A4-CBE2-4A2D-8427-1C7A5AA0A0D7}.Release|x64.Build.0 = Release|x64
+		{AEB46CE2-7E04-41A7-9C7D-2DD82E23A1C4}.Debug|x64.ActiveCfg = Debug|x64
+		{AEB46CE2-7E04-41A7-9C7D-2DD82E23A1C4}.Debug|x64.Build.0 = Debug|x64
+		{AEB46CE2-7E04-41A7-9C7D-2DD82E23A1C4}.Release|x64.ActiveCfg = Release|x64
+		{AEB46CE2-7E04-41A7-9C7D-2DD82E23A1C4}.Release|x64.Build.0 = Release|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.ActiveCfg = Debug|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.Build.0 = Debug|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.ActiveCfg = Release|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AEB46CE2-7E04-41A7-9C7D-2DD82E23A1C4} = {0DC5AA4F-0AA1-4F63-ADC1-132C2AABBB08}
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77} = {0DC5AA4F-0AA1-4F63-ADC1-132C2AABBB08}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B307E01-636D-4E21-96D7-D360CA0F8DFA}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,83 @@
+door pos(135 16 0) rot(90)
+start pos(-50 0 0) rot(90)
+
+// 床
+wall pos(0 -11 0) scale(95 10 85) texture(1)
+wall pos(105 7 0) scale(30 8 15) texture(1)
+
+wall pos(80 40 35) scale(55 1 20) texture(1)
+wall pos(80 40 -35) scale(55 1 20) texture(1)
+wall pos(25 40 0) scale(40 1 15) texture(1)
+wall pos(115 40 0) scale(20 1 15) texture(1)
+
+// 壁
+wall pos(-10 29 75) scale(85 30 10)
+wall pos(-10 29 -75) scale(85 30 10)
+wall pos(-85 29 0) scale(10 30 65)
+wall pos(105 19 45) scale(30 20 30)
+wall pos(105 19 -45) scale(30 20 30)
+wall pos(0 19 55) scale(55 20 10)
+wall pos(0 19 -55) scale(55 20 10)
+
+wall pos(65 14 0) scale(10 1 25)
+wall pos(52 6 0) scale(3 7 25)
+wall pos(46 5 0) scale(3 6 25)
+wall pos(40 4 0) scale(3 5 25)
+wall pos(34 3 0) scale(3 4 25)
+wall pos(28 2 0) scale(3 3 25)
+wall pos(22 1 0) scale(3 2 25)
+wall pos(16 0 0) scale(3 1 25)
+wall pos(-65 29 55) scale(10 10 10)
+wall pos(65 29 55) scale(10 10 10)
+wall pos(-65 29 -55) scale(10 10 10)
+wall pos(65 29 -55) scale(10 10 10)
+wall pos(145 19 0) scale(10 20 55)
+
+wall pos(80 49 60) scale(55 10 5)
+wall pos(80 49 -60) scale(55 10 5)
+wall pos(145 49 0) scale(10 10 65)
+wall pos(-25 49 40) scale(50 10 25)
+wall pos(-25 49 -40) scale(50 10 25)
+
+// 青で消える壁
+wall pos(-65 9 46) scale(10 10 1) vflag(2)
+wall pos(65 9 46) scale(10 10 1) vflag(2)
+wall pos(-65 9 -46) scale(10 10 1) vflag(2)
+wall pos(65 9 -46) scale(10 10 1) vflag(2)
+wall pos(20 50 0) scale(5 9 15) vflag(2)
+
+// 赤で消える壁
+wall pos(65 6 20) scale(10 7 5) vflag(1)
+wall pos(65 6 -20) scale(10 7 5) vflag(1)
+
+// 鍵ドア
+wall pos(115 27 0) scale(1 12 15) vflag(3) event(1)
+
+// 動く壁
+wall pos(45 50 0) scale(20 9 15) mflag(1) pathPos(45 115 0) interval(0) event(2) rflag(0)
+
+// エレベーター
+wall pos(80 14.5 0) scale(15 1 15) mflag(1) pathPos(80 40 0) model(1)
+
+// 燭台
+candle pos(0 0 0)
+candle pos(70 0 60)
+candle pos(70 0 -60)
+candle pos(-70 0 60)
+candle pos(-70 0 -60)
+candle pos(0 42 0)
+candle pos(115 42 0)
+
+// スイッチ
+switch pos(115 42 35) event(2) rot(90)
+switch pos(115 42 -35) event(2) rot(90)
+switch pos(45 42 35) event(2) rot(-90)
+switch pos(45 42 -35) event(2) rot(-90)
+
+// 鍵欠片
+key pos(65 0 0) event(1) model(1)
+key pos(60 0 60) event(1) model(2)
+key pos(60 0 -60) event(1) model(3)
+key pos(-60 0 60) event(1) model(4)
+key pos(-60 0 -60) event(1) model(5)
+key pos(45 42 0) event(1) model(6)

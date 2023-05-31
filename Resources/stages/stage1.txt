@@ -1,0 +1,74 @@
+start pos(0 0 -50) // スタート
+door pos(54 20 75) // ゴール
+
+// 床
+wall pos(0 -11 0) scale(81 10 81) texture(1)
+wall pos(66 38 -12) scale(9 1 15) texture(1)
+wall pos(15 38 -12) scale(12 1 9) texture(1)
+
+// ステージを囲う壁
+wall pos(0 39 85) scale(81 40 10)
+wall pos(0 39 -85) scale(81 40 10)
+wall pos(85 39 0) scale(10 40 81)
+wall pos(-85 39 0) scale(10 40 81)
+
+// 壁
+wall pos(-54 19 -15) scale(27 20 18) texture(1)
+wall pos(72 9 60) scale(3 10 15)
+wall pos(36 9 60) scale(3 10 15)
+wall pos(30 8 66) scale(3 9 9)
+wall pos(24 7 66) scale(3 8 9)
+wall pos(18 6 66) scale(3 7 9)
+wall pos(12 5 66) scale(3 6 9)
+wall pos(6 4 66) scale(3 5 9)
+wall pos(-6 3 60) scale(9 4 15)
+wall pos(6 2 51) scale(3 3 6)
+wall pos(12 1 51) scale(3 2 6)
+wall pos(-60 9 54) scale(15 10 3)
+wall pos(69 3 -69) scale(6 4 6)
+wall pos(69 2 -57) scale(6 3 6)
+wall pos(57 1 -57) scale(6 2 6)
+wall pos(18 0 51) scale(3 1 6)
+wall pos(54 18 60) scale(15 1 15)
+wall pos(57 0 -69) scale(6 1 6)
+wall pos(-30 9 -36) scale(3 10 3)
+wall pos(-30 9 -72) scale(3 10 3)
+
+// 赤で消える壁
+wall pos(-54 9 66) scale(3 10 9) vflag(1)
+wall pos(-12 38 -12) scale(15 1 9) vflag(1)
+
+// 青で消える壁
+wall pos(54 8 48) scale(15 9 3) vflag(2)
+wall pos(42 38 -12) scale(15 1 9) vflag(2)
+
+// 動く壁
+wall pos(-48 9 66) scale(3 10 9) mflag(1) pathPos(-48 19 66) event(3) rflag(0)
+
+// エレベーター
+wall pos(-54 -0.5 -54) scale(15 1 21) mflag(1) pathPos(-54 38 -54) event(1) model(1)
+
+// 鍵ドア
+wall pos(-30 9 -54) scale(3 10 15) vflag(3) event(2)
+
+// 鍵
+key pos(54 0 66) event(2)
+
+// スイッチ
+switch pos(-72 0 -54) rot(90) event(1)
+switch pos(-12 8 72) rot(90) event(3)
+
+// 燭台
+candle pos(0 0 0)
+candle pos(-6 8 60)
+candle pos(-54 40 -12)
+candle pos(66 40 -12)
+candle pos(-66 0 66)
+candle pos(72 8 -72)
+
+
+
+
+
+
+

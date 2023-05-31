@@ -1,0 +1,18 @@
+wall scale(40 10 40) pos(0 -11 0) texture(1)
+start pos(0 0 -35)
+
+// ステージを囲う壁
+wall pos(0 0 50) scale(40 20 10)
+wall pos(0 0 -50) scale(40 20 10)
+wall pos(50 0 0) scale(10 20 60)
+wall pos(-50 0 0) scale(10 20 60)
+
+candle pos(0 0 0)
+candle pos(-10 0 0)
+candle pos(10 0 0)
+candle pos(-20 0 0)
+candle pos(20 0 0)
+rmdoor pos(-20 0 40)
+rmdoor pos(0 0 40)
+rmdoor pos(20 0 40)
+door pos(-40 0 0) rot(270)
