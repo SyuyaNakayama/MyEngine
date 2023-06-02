@@ -1,17 +1,14 @@
 #pragma once
 #include "Input.h"
-#include "UIDrawer.h"
 #include "DebugCamera.h"
-#include "Stage.h"
 class SceneManager;
 
 class BaseScene
 {
 protected:
-	SceneManager* sceneManager_ = nullptr;
+	SceneManager* sceneManager = nullptr;
 	Input* input = Input::GetInstance();
 	DebugCamera debugCamera;
-	Stage stage;
 
 public:
 	BaseScene();

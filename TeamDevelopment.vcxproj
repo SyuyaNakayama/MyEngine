@@ -160,25 +160,21 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SourceFiles\3d\Material.cpp" />
-    <ClCompile Include="SourceFiles\functions\Motion.cpp" />
     <ClCompile Include="SourceFiles\functions\Random.cpp" />
     <ClCompile Include="SourceFiles\math\MathUtility.cpp" />
     <ClCompile Include="SourceFiles\objects\Skydome.cpp" />
     <ClCompile Include="SourceFiles\particle\ParticleGroup.cpp" />
     <ClCompile Include="SourceFiles\particle\TrackParticle.cpp" />
     <ClCompile Include="SourceFiles\physics\Jump.cpp" />
-    <ClCompile Include="SourceFiles\objects\PlayerHealZone.cpp" />
     <ClCompile Include="SourceFiles\particle\DiffuseParticle.cpp" />
     <ClCompile Include="SourceFiles\particle\DirectionalParticle.cpp" />
     <ClCompile Include="SourceFiles\audio\PointAudio.cpp" />
-    <ClCompile Include="SourceFiles\3d\Camera.cpp" />
-    <ClCompile Include="SourceFiles\objects\Player.cpp" />
+    <ClCompile Include="SourceFiles\3d\BaseCamera.cpp" />
     <ClCompile Include="SourceFiles\2d\ImGuiManager.cpp" />
     <ClCompile Include="SourceFiles\2d\PostEffect.cpp" />
     <ClCompile Include="SourceFiles\2d\sprite\Sprite.cpp" />
     <ClCompile Include="SourceFiles\2d\sprite\SpriteAnimation.cpp" />
     <ClCompile Include="SourceFiles\2d\sprite\SpriteCommon.cpp" />
-    <ClCompile Include="SourceFiles\2d\UIDrawer.cpp" />
     <ClCompile Include="SourceFiles\3d\DebugCamera.cpp" />
     <ClCompile Include="SourceFiles\3d\Mesh.cpp" />
     <ClCompile Include="SourceFiles\3d\Model.cpp" />
@@ -199,8 +195,6 @@
     <ClCompile Include="SourceFiles\math\Matrix4.cpp" />
     <ClCompile Include="SourceFiles\math\Quaternion.cpp" />
     <ClCompile Include="SourceFiles\math\Vector.cpp" />
-    <ClCompile Include="SourceFiles\objects\Gimmick.cpp" />
-    <ClCompile Include="SourceFiles\objects\Stage.cpp" />
     <ClCompile Include="SourceFiles\functions\FadeManager.cpp" />
     <ClCompile Include="SourceFiles\collider\Collider.cpp" />
     <ClCompile Include="SourceFiles\collider\CollisionManager.cpp" />
@@ -208,32 +202,25 @@
     <ClCompile Include="SourceFiles\scene\BaseScene.cpp" />
     <ClCompile Include="SourceFiles\scene\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\scene\SceneManager.cpp" />
-    <ClCompile Include="SourceFiles\scene\SelectScene.cpp" />
-    <ClCompile Include="SourceFiles\scene\TitleScene.cpp" />
-    <ClCompile Include="SourceFiles\scene\GamePlayScene.cpp" />
-    <ClCompile Include="SourceFiles\scene\TutorialScene.cpp" />
+    <ClCompile Include="SourceFiles\scene\TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\3d\Material.h" />
-    <ClInclude Include="SourceFiles\functions\Motion.h" />
     <ClInclude Include="SourceFiles\functions\Random.h" />
     <ClInclude Include="SourceFiles\math\MathUtility.h" />
     <ClInclude Include="SourceFiles\objects\Skydome.h" />
     <ClInclude Include="SourceFiles\particle\ParticleGroup.h" />
     <ClInclude Include="SourceFiles\particle\TrackParticle.h" />
     <ClInclude Include="SourceFiles\physics\Jump.h" />
-    <ClInclude Include="SourceFiles\objects\PlayerHealZone.h" />
     <ClInclude Include="SourceFiles\particle\DiffuseParticle.h" />
     <ClInclude Include="SourceFiles\particle\DirectionalParticle.h" />
     <ClInclude Include="SourceFiles\audio\PointAudio.h" />
-    <ClInclude Include="SourceFiles\3d\Camera.h" />
-    <ClInclude Include="SourceFiles\objects\Player.h" />
+    <ClInclude Include="SourceFiles\3d\BaseCamera.h" />
     <ClInclude Include="SourceFiles\2d\ImGuiManager.h" />
     <ClInclude Include="SourceFiles\2d\PostEffect.h" />
     <ClInclude Include="SourceFiles\2d\sprite\Sprite.h" />
     <ClInclude Include="SourceFiles\2d\sprite\SpriteAnimation.h" />
     <ClInclude Include="SourceFiles\2d\sprite\SpriteCommon.h" />
-    <ClInclude Include="SourceFiles\2d\UIDrawer.h" />
     <ClInclude Include="SourceFiles\3d\DebugCamera.h" />
     <ClInclude Include="SourceFiles\3d\Mesh.h" />
     <ClInclude Include="SourceFiles\3d\Model.h" />
@@ -257,8 +244,6 @@
     <ClInclude Include="SourceFiles\math\Matrix4.h" />
     <ClInclude Include="SourceFiles\math\Quaternion.h" />
     <ClInclude Include="SourceFiles\math\Vector.h" />
-    <ClInclude Include="SourceFiles\objects\Gimmick.h" />
-    <ClInclude Include="SourceFiles\objects\Stage.h" />
     <ClInclude Include="SourceFiles\engine\AbstractSceneFactory.h" />
     <ClInclude Include="SourceFiles\physics\Kinematics.h" />
     <ClInclude Include="SourceFiles\scene\BaseScene.h" />
@@ -268,10 +253,7 @@
     <ClInclude Include="SourceFiles\scene\Scene.h" />
     <ClInclude Include="SourceFiles\scene\SceneFactory.h" />
     <ClInclude Include="SourceFiles\scene\SceneManager.h" />
-    <ClInclude Include="SourceFiles\scene\SelectScene.h" />
-    <ClInclude Include="SourceFiles\scene\TitleScene.h" />
-    <ClInclude Include="SourceFiles\scene\GamePlayScene.h" />
-    <ClInclude Include="SourceFiles\scene\TutorialScene.h" />
+    <ClInclude Include="SourceFiles\scene\TestScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">
@@ -280,14 +262,6 @@
     <ProjectReference Include="External\imgui\imgui.vcxproj">
       <Project>{aeb46ce2-7e04-41a7-9c7d-2dd82e23a1c4}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Resources\stages\stage3.txt" />
-    <Text Include="Resources\stages\stage1.txt" />
-    <Text Include="Resources\stages\stage2.txt" />
-    <Text Include="Resources\stages\stage4.txt" />
-    <Text Include="Resources\stages\stage_select.txt" />
-    <Text Include="Resources\stages\stage_tutorial.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

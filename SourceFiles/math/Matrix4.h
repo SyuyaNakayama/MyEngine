@@ -11,9 +11,8 @@ public:
 		0.0f,0.0f,1.0f,0.0f,
 		0.0f,0.0f,0.0f,1.0f
 	};
+	Matrix4 operator*=(const Matrix4& m2);
 
-	const Matrix4& operator*=(const Matrix4& m2);
-	std::array<Vector3, 3> Get3Vectors() const;
 	// Ã“IŠÖ”
 	static Matrix4 Identity();
 	static Matrix4 Zero();

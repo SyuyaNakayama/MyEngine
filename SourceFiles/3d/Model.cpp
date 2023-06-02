@@ -28,6 +28,10 @@ void Model::StaticInitialize()
 	pipelineManager.CreatePipeline(pipelinestate, rootsignature);
 	// ライトグループ生成
 	lightGroup = LightGroup::Create();
+	// カメラ生成
+	ViewProjection* viewProjection = new ViewProjection;
+	viewProjection->Initialize();
+	Model::viewProjection = viewProjection;
 }
 
 std::unique_ptr<Model> Model::Create(const string& modelName, bool smoothing)
@@ -85,8 +89,6 @@ void Model::Draw(const WorldTransform& worldTransform)
 
 void Model::StaticUpdate()
 {
-	assert(lightGroup);
-	assert(viewProjection);
-	lightGroup->Update(); 
+	lightGroup->Update();
 	viewProjection->Update();
 }

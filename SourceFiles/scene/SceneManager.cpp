@@ -2,6 +2,8 @@
 #include "SpriteCommon.h"
 #include "CollisionManager.h"
 
+BaseScene::BaseScene() { sceneManager = SceneManager::GetInstance(); }
+
 SceneManager* SceneManager::GetInstance()
 {
 	static SceneManager sceneManager;
