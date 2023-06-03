@@ -4,12 +4,24 @@
 #include "LightGroup.h"
 #include "Mesh.h"
 
-class Model : public Mesh
+class Model
 {
+public:
+	// マテリアル
+	struct ConstBufferData
+	{
+		ColorRGB ambient;
+		float pad1;
+		ColorRGB diffuse;
+		float pad2;
+		ColorRGB specular;
+		float alpha;
+	};
+
 private:
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	
+
 	// パイプラインステートオブジェクト
 	static ComPtr<ID3D12PipelineState> pipelinestate;
 	// ルートシグネチャ
@@ -17,14 +29,22 @@ private:
 	// ライト
 	static std::unique_ptr<LightGroup> lightGroup;
 	// 読み込んだモデル情報
-	static std::list<Model*> models;
+	static std::list<std::unique_ptr<Mesh>> meshes;
 	// ビュープロジェクションのポインタ
 	static ViewProjection* viewProjection;
 	
-	std::string modelName;	// モデル名
+	Mesh* mesh = nullptr; // メッシュのポインタ
+	ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
+	ComPtr<ID3D12Resource> indexBuff;	// インデックスバッファ
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// 定数バッファ
+	Mesh::VertexData* vertMap = nullptr;		// 頂点バッファのマップ
+	ConstBufferData* constMap = nullptr;
+	D3D12_VERTEX_BUFFER_VIEW vbView{};	// 頂点バッファビュー
+	D3D12_INDEX_BUFFER_VIEW ibView{};	// インデックスバッファビュー
+
+	void CreateBuffers();
 
 public:
-	~Model() { models.remove(this); }
 	// 静的初期化
 	static void StaticInitialize();
 	// 静的更新
@@ -38,5 +58,7 @@ public:
 	static LightGroup* GetLightGroup() { return lightGroup.get(); }
 	static void SetViewProjection(ViewProjection* viewProjection_) { viewProjection = viewProjection_; }
 	static ViewProjection* GetViewProjection() { return viewProjection; }
+	Mesh* GetMesh() { return mesh; }
+	void Update();
 	void Draw(const WorldTransform& worldTransform);
 };

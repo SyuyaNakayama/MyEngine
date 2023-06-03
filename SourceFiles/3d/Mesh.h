@@ -19,27 +19,21 @@ private:
 	// Microsoft::WRL::を省略
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
-	ComPtr<ID3D12Resource> indexBuff;	// インデックスバッファ
-	D3D12_VERTEX_BUFFER_VIEW vbView{};	// 頂点バッファビュー
-	D3D12_INDEX_BUFFER_VIEW ibView{};	// インデックスバッファビュー
-	VertexData* vertMap = nullptr;		// 頂点バッファのマップ
-
 	// 頂点法線の平均化
 	void CalculateSmoothedVertexNormals();
-
-protected:
 	std::vector<VertexData> vertices;	// 頂点データ配列
 	std::vector<UINT16> indices;		// 頂点インデックス配列
 	std::unordered_map<UINT16, std::vector<UINT16>> smoothData;	// 頂点座標スムージング用データ
-	bool isSmooth = false;	// スムージング
-
-	void LoadOBJ(const std::string& modelName);
-	void CreateBuffers(); // バッファの生成
-	void SetMesh(Mesh* mesh);
-	void Draw();
 
 public:
-	virtual ~Mesh() = default;
+	bool isSmooth = false;	// スムージング
+	std::string modelName;	// モデル名
+
+	void LoadOBJ(const std::string& modelName, bool isSmooth);
+	void CreateBuffers(); // バッファの生成
+	void SetMesh(Mesh* mesh);
+	const std::vector<VertexData>& GetVertices() { return vertices; }
+	const std::vector<UINT16>& GetIndices() { return indices; }
+	void Draw();
 	void Update();
 };

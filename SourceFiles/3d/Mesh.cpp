@@ -14,26 +14,6 @@ void LoadVector3Stream(istringstream& stream, Vector3& vec)
 
 void Mesh::CreateBuffers()
 {
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexData) * vertices.size());
-	// 頂点バッファ生成
-	CreateBuffer(&vertBuff, &vertMap, sizeVB);
-	// 全頂点に対して
-	copy(vertices.begin(), vertices.end(), vertMap); // 座標をコピー
-	// 頂点バッファビューの作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	vbView.SizeInBytes = sizeVB;
-	vbView.StrideInBytes = sizeof(VertexData);
-
-	UINT16* indexMap = nullptr;
-	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
-	// インデックスバッファ生成
-	CreateBuffer(&indexBuff, &indexMap, sizeIB);
-	// 全インデックスに対して
-	copy(indices.begin(), indices.end(), indexMap);	// インデックスをコピー
-	// インデックスバッファビューの作成
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
-	ibView.SizeInBytes = sizeIB;
 
 	// マテリアルの初期化
 	Material::Initialize();
@@ -54,8 +34,10 @@ void Mesh::CalculateSmoothedVertexNormals()
 	}
 }
 
-void Mesh::LoadOBJ(const std::string& modelName)
+void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
 {
+	modelName = modelName_;
+	isSmooth = isSmooth_;
 	const string FILENAME = modelName + ".obj";
 	const string DIRECTORY_PATH = "Resources/models/" + modelName + "/";
 
@@ -152,22 +134,6 @@ void Mesh::LoadOBJ(const std::string& modelName)
 
 void Mesh::Update()
 {
-	sprite->Update();
-	Vector2 spriteSizeRate =
-	{
-		sprite->GetTextureSize().x / sprite->GetSize().x,
-		sprite->GetTextureSize().y / sprite->GetSize().y
-	};
-
-	for (size_t i = 0; i < vertices.size(); i++)
-	{
-		Vector2 uv = vertices[i].uv;
-		uv.x *= spriteSizeRate.x;
-		uv.y *= spriteSizeRate.y;
-		uv += sprite->GetVerticesUv(Sprite::VertexNumber::LT);
-		vertMap[i].uv = uv;
-		vertMap[i].color = sprite->GetColor();
-	}
 
 	Material::Update();
 }
@@ -175,11 +141,6 @@ void Mesh::Update()
 void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
-	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	// インデックスバッファの設定
-	cmdList->IASetIndexBuffer(&ibView);
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
 	// シェーダリソースビューをセット
 	assert(sprite);

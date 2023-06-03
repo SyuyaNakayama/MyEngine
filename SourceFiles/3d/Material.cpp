@@ -46,17 +46,11 @@ void Material::LoadMaterial(const string& directoryPath, const string& filename)
 
 void Material::Initialize()
 {
-	// 定数バッファ生成
-	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 	Update();
 }
 
 void Material::Update()
 {
-	constMap->ambient = ambient;
-	constMap->diffuse = diffuse;
-	constMap->specular = specular;
-	constMap->alpha = 1.0f;
 }
 
 void Material::SetMaterial(Material* material)

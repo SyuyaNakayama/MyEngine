@@ -8,8 +8,42 @@ using namespace std;
 ComPtr<ID3D12PipelineState> Model::pipelinestate = nullptr;
 ComPtr<ID3D12RootSignature> Model::rootsignature = nullptr;
 unique_ptr<LightGroup> Model::lightGroup;
-list<Model*> Model::models;
+list<unique_ptr<Mesh>> Model::meshes;
 ViewProjection* Model::viewProjection = nullptr;
+
+void Model::CreateBuffers()
+{
+	auto& vertices = mesh->GetVertices();
+	UINT sizeVB = static_cast<UINT>(sizeof(Mesh::VertexData) * vertices.size());
+	// 頂点バッファ生成
+	CreateBuffer(&vertBuff, &vertMap, sizeVB);
+	// 全頂点に対して
+	copy(vertices.begin(), vertices.end(), vertMap); // 座標をコピー
+	// 頂点バッファビューの作成
+	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView.SizeInBytes = sizeVB;
+	vbView.StrideInBytes = sizeof(Mesh::VertexData);
+
+	UINT16* indexMap = nullptr;
+	auto& indices = mesh->GetIndices();
+	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
+	// インデックスバッファ生成
+	CreateBuffer(&indexBuff, &indexMap, sizeIB);
+	// 全インデックスに対して
+	copy(indices.begin(), indices.end(), indexMap);	// インデックスをコピー
+	// インデックスバッファビューの作成
+	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeIB;
+
+	// 定数バッファ生成
+	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
+	
+	constMap->ambient = mesh->GetAnbient();
+	constMap->diffuse = mesh->GetDiffuse();
+	constMap->specular = mesh->GetSpecular();
+	constMap->alpha = 1.0f;
+}
 
 void Model::StaticInitialize()
 {
@@ -38,24 +72,23 @@ std::unique_ptr<Model> Model::Create(const string& modelName, bool smoothing)
 {
 	unique_ptr<Model> newModel = make_unique<Model>();
 
-	for (auto& model : models)
+	for (auto& mesh : meshes)
 	{
-		if (model->modelName.find(modelName) == string::npos) { continue; }
-		if (model->isSmooth != smoothing) { continue; } // スムージングあり/なしを区別
+		if (mesh->modelName.find(modelName) == string::npos) { continue; }
+		if (mesh->isSmooth != smoothing) { continue; } // スムージングあり/なしを区別
 		// 既に読み込んでいたモデルの場合
-		newModel->SetMesh(model); // メッシュデータをコピー
-		newModel->SetMaterial(model); // マテリアルデータをコピー
-		std::unique_ptr<Sprite> newSprite = Sprite::Create(newModel->textureFilename);
-		newModel->sprite = move(newSprite);
+		newModel->mesh = mesh.get();
+		//std::unique_ptr<Sprite> newSprite = Sprite::Create(mesh->textureFilename);
+		//newModel->sprite = move(newSprite);
 		newModel->CreateBuffers();
 		return newModel;
 	}
 
-	newModel->modelName = modelName;
-	newModel->isSmooth = smoothing;
-	newModel->LoadOBJ(modelName);
+	unique_ptr<Mesh> newMesh = make_unique<Mesh>();
+	newMesh->LoadOBJ(modelName, smoothing);
+	newModel->mesh = newMesh.get();
 	newModel->CreateBuffers();
-	models.push_back(newModel.get());
+	meshes.push_back(move(newMesh));
 	return newModel;
 }
 
@@ -80,11 +113,38 @@ void Model::PreDraw()
 	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
+void Model::Update()
+{
+	Sprite* sprite = mesh->GetSprite();
+	sprite->Update();
+	Vector2 spriteSizeRate =
+	{
+		sprite->GetTextureSize().x / sprite->GetSize().x,
+		sprite->GetTextureSize().y / sprite->GetSize().y
+	};
+
+	auto& vertices = mesh->GetVertices();
+	for (size_t i = 0; i < vertices.size(); i++)
+	{
+		Vector2 uv = vertices[i].uv;
+		uv.x *= spriteSizeRate.x;
+		uv.y *= spriteSizeRate.y;
+		uv += sprite->GetVerticesUv(Sprite::VertexNumber::LT);
+		vertMap[i].uv = uv;
+		vertMap[i].color = sprite->GetColor();
+	}
+}
+
 void Model::Draw(const WorldTransform& worldTransform)
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView(1, worldTransform.constBuffer->GetGPUVirtualAddress());
-	Mesh::Draw();
+	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
+	// 頂点バッファの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
+	// インデックスバッファの設定
+	cmdList->IASetIndexBuffer(&ibView);
+	mesh->Draw();
 }
 
 void Model::StaticUpdate()

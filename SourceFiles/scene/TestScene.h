@@ -4,8 +4,8 @@
 
 class TestScene : public BaseScene
 {
-	std::unique_ptr<Model> model;
-	WorldTransform worldTransform;
+	std::unique_ptr<Model> models[2];
+	WorldTransform worldTransforms[2];
 
 	void Initialize();
 	void Update();

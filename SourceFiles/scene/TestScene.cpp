@@ -2,8 +2,10 @@
 
 void TestScene::Initialize()
 {
-	model = Model::Create("cube");
-	worldTransform.Initialize();
+	models[0] = Model::Create("cube");
+	worldTransforms[0].Initialize();
+	worldTransforms[1].Initialize();
+	worldTransforms[1].translation.x = 4.0f;
 	debugCamera.Initialize();
 	Model::SetViewProjection(&debugCamera.GetViewProjection());
 }
@@ -11,12 +13,14 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 	debugCamera.Update();
-	worldTransform.Update();
+	worldTransforms[0].Update();
+	worldTransforms[1].Update();
 }
 
 void TestScene::Draw()
 {
 	Model::PreDraw();
-	model->Draw(worldTransform);
+	models[0]->Draw(worldTransforms[0]);
+	models[0]->Draw(worldTransforms[1]);
 	Model::PostDraw();
 }
