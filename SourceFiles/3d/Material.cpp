@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "D3D12Common.h"
+#include "SpriteCommon.h"
 using namespace std;
 
 void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
@@ -42,4 +43,21 @@ void Material::Load(const string& directoryPath, const string& filename)
 		}
 	}
 	file.close();
+
+	// 定数バッファ生成
+	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
+
+	constMap->ambient = ambient;
+	constMap->diffuse = diffuse;
+	constMap->specular = specular;
+	constMap->alpha = 1.0f;
+}
+
+void Material::Draw()
+{
+	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
+	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
+	// シェーダリソースビューをセット
+	SpriteCommon* spCommon = SpriteCommon::GetInstance();
+	cmdList->SetGraphicsRootDescriptorTable(0, spCommon->GetGpuHandle(sprite->GetTextureIndex()));
 }

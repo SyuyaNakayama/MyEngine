@@ -26,13 +26,6 @@ void Model::CreateBuffers()
 
 	mesh->CreateIndexBuffer();
 
-	// 定数バッファ生成
-	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
-	
-	constMap->ambient = material.GetAnbient();
-	constMap->diffuse = material.GetDiffuse();
-	constMap->specular = material.GetSpecular();
-	constMap->alpha = 1.0f;
 }
 
 void Model::StaticInitialize()
@@ -129,12 +122,9 @@ void Model::Draw(const WorldTransform& worldTransform)
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView(1, worldTransform.constBuffer->GetGPUVirtualAddress());
-	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	// シェーダリソースビューをセット
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-	cmdList->SetGraphicsRootDescriptorTable(0, spCommon->GetGpuHandle(material.GetSprite()->GetTextureIndex()));
+	material.Draw();
 	mesh->Draw();
 }
 

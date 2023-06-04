@@ -6,18 +6,6 @@
 
 class Model
 {
-public:
-	// マテリアル
-	struct ConstBufferData
-	{
-		ColorRGB ambient;
-		float pad1;
-		ColorRGB diffuse;
-		float pad2;
-		ColorRGB specular;
-		float alpha;
-	};
-
 private:
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -39,8 +27,6 @@ private:
 	ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
 	D3D12_VERTEX_BUFFER_VIEW vbView{};	// 頂点バッファビュー
 	Mesh::VertexData* vertMap = nullptr;		// 頂点バッファのマップ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// 定数バッファ
-	ConstBufferData* constMap = nullptr;
 
 	void CreateBuffers();
 
