@@ -9,6 +9,8 @@ void TestScene::Initialize()
 	worldTransforms[1].translation.x = 4.0f;
 	debugCamera.Initialize();
 	Model::SetViewProjection(&debugCamera.GetViewProjection());
+	models[0]->GetMatrial()->SetSprite(Sprite::Create("stages/floor.png"));
+	models[1]->GetMatrial()->SetSprite(Sprite::Create("stages/floor.png"));
 }
 
 void TestScene::Update()
@@ -16,7 +18,8 @@ void TestScene::Update()
 	debugCamera.Update();
 	worldTransforms[0].Update();
 	worldTransforms[1].Update();
-	models[0]->GetMatrial()->GetSprite()->SetColor({1,0,0,1});
+	Sprite* modelSprite = models[0]->GetMatrial()->GetSprite();
+	modelSprite->SetTextureLeftTop(modelSprite->GetTextureLeftTop() + Vector2(1, 0));
 	models[0]->Update();
 	models[1]->Update();
 }
