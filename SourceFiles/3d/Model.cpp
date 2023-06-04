@@ -39,9 +39,9 @@ void Model::CreateBuffers()
 	// 定数バッファ生成
 	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 	
-	constMap->ambient = mesh->GetAnbient();
-	constMap->diffuse = mesh->GetDiffuse();
-	constMap->specular = mesh->GetSpecular();
+	constMap->ambient = material.GetAnbient();
+	constMap->diffuse = material.GetDiffuse();
+	constMap->specular = material.GetSpecular();
 	constMap->alpha = 1.0f;
 }
 
@@ -78,8 +78,7 @@ std::unique_ptr<Model> Model::Create(const string& modelName, bool smoothing)
 		if (mesh->isSmooth != smoothing) { continue; } // スムージングあり/なしを区別
 		// 既に読み込んでいたモデルの場合
 		newModel->mesh = mesh.get();
-		//std::unique_ptr<Sprite> newSprite = Sprite::Create(mesh->textureFilename);
-		//newModel->sprite = move(newSprite);
+		newModel->material.Load(mesh->directoryPath, mesh->materialFileName);
 		newModel->CreateBuffers();
 		return newModel;
 	}
@@ -87,6 +86,7 @@ std::unique_ptr<Model> Model::Create(const string& modelName, bool smoothing)
 	unique_ptr<Mesh> newMesh = make_unique<Mesh>();
 	newMesh->LoadOBJ(modelName, smoothing);
 	newModel->mesh = newMesh.get();
+	newModel->material.Load(newMesh->directoryPath, newMesh->materialFileName);
 	newModel->CreateBuffers();
 	meshes.push_back(move(newMesh));
 	return newModel;
@@ -115,7 +115,7 @@ void Model::PreDraw()
 
 void Model::Update()
 {
-	Sprite* sprite = mesh->GetSprite();
+	Sprite* sprite = material.GetSprite();
 	sprite->Update();
 	Vector2 spriteSizeRate =
 	{
@@ -144,6 +144,9 @@ void Model::Draw(const WorldTransform& worldTransform)
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファの設定
 	cmdList->IASetIndexBuffer(&ibView);
+	// シェーダリソースビューをセット
+	SpriteCommon* spCommon = SpriteCommon::GetInstance();
+	cmdList->SetGraphicsRootDescriptorTable(0, spCommon->GetGpuHandle(material.GetSprite()->GetTextureIndex()));
 	mesh->Draw();
 }
 

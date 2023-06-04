@@ -34,6 +34,8 @@ private:
 	static ViewProjection* viewProjection;
 	
 	Mesh* mesh = nullptr; // メッシュのポインタ
+	Material material;
+
 	ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
 	ComPtr<ID3D12Resource> indexBuff;	// インデックスバッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// 定数バッファ
@@ -59,6 +61,7 @@ public:
 	static void SetViewProjection(ViewProjection* viewProjection_) { viewProjection = viewProjection_; }
 	static ViewProjection* GetViewProjection() { return viewProjection; }
 	Mesh* GetMesh() { return mesh; }
+	Material* GetMatrial() { return &material; }
 	void Update();
 	void Draw(const WorldTransform& worldTransform);
 };

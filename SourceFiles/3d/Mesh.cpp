@@ -12,13 +12,6 @@ void LoadVector3Stream(istringstream& stream, Vector3& vec)
 	stream >> vec.z;
 }
 
-void Mesh::CreateBuffers()
-{
-
-	// マテリアルの初期化
-	Material::Initialize();
-}
-
 void Mesh::CalculateSmoothedVertexNormals()
 {
 	for (auto& itr : smoothData)
@@ -61,7 +54,8 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
 		{
 			string filename;
 			line_stream >> filename;
-			LoadMaterial(DIRECTORY_PATH, filename);
+			directoryPath = DIRECTORY_PATH;
+			materialFileName = filename;
 		}
 		// 頂点座標読み込み
 		if (key == "v")
@@ -131,26 +125,10 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
 	if (isSmooth) { CalculateSmoothedVertexNormals(); }
 }
 
-
-void Mesh::Update()
-{
-
-	Material::Update();
-}
-
 void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-	// シェーダリソースビューをセット
-	assert(sprite);
-	cmdList->SetGraphicsRootDescriptorTable(0, spCommon->GetGpuHandle(sprite->GetTextureIndex()));
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
-}
-
-void Mesh::SetMesh(Mesh* mesh)
-{
-	vertices = mesh->vertices;
-	indices = mesh->indices;
 }

@@ -15,7 +15,7 @@ void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
 	color.b = colorTemp.z;
 }
 
-void Material::LoadMaterial(const string& directoryPath, const string& filename)
+void Material::Load(const string& directoryPath, const string& filename)
 {
 	ifstream file;
 	file.open(directoryPath + filename);
@@ -42,22 +42,4 @@ void Material::LoadMaterial(const string& directoryPath, const string& filename)
 		}
 	}
 	file.close();
-}
-
-void Material::Initialize()
-{
-	Update();
-}
-
-void Material::Update()
-{
-}
-
-void Material::SetMaterial(Material* material)
-{
-	materialName = material->materialName;
-	ambient = material->ambient;
-	diffuse = material->diffuse;
-	specular = material->specular;
-	textureFilename = material->textureFilename;
 }

@@ -10,16 +10,11 @@ private:
 	ColorRGB diffuse;
 	ColorRGB specular;
 
-protected:
 	std::unique_ptr<Sprite> sprite;		// テクスチャ
-	
-	void LoadMaterial(const std::string& directoryPath, const std::string& filename); // マテリアル読み込み
-	void Initialize();
-	void Update();
-	void SetMaterial(Material* material);
 
 public:
 	std::string textureFilename;
+	void Load(const std::string& directoryPath, const std::string& filename); // マテリアル読み込み
 	void SetAnbient(ColorRGB anbient_) { ambient = anbient_; }
 	void SetDiffuse(ColorRGB diffuse_) { diffuse = diffuse_; }
 	void SetSpecular(ColorRGB specular_) { specular = specular_; }

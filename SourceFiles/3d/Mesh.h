@@ -3,7 +3,7 @@
 #include <unordered_map>
 
 // 形状データ
-class Mesh : public Material
+class Mesh
 {
 public:
 	// 頂点データ構造体
@@ -28,12 +28,11 @@ private:
 public:
 	bool isSmooth = false;	// スムージング
 	std::string modelName;	// モデル名
+	std::string materialFileName;	// マテリアルファイル名
+	std::string directoryPath;	// ディレクトリパス名
 
 	void LoadOBJ(const std::string& modelName, bool isSmooth);
-	void CreateBuffers(); // バッファの生成
-	void SetMesh(Mesh* mesh);
 	const std::vector<VertexData>& GetVertices() { return vertices; }
 	const std::vector<UINT16>& GetIndices() { return indices; }
 	void Draw();
-	void Update();
 };
