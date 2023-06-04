@@ -24,17 +24,7 @@ void Model::CreateBuffers()
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(Mesh::VertexData);
 
-	UINT16* indexMap = nullptr;
-	auto& indices = mesh->GetIndices();
-	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
-	// インデックスバッファ生成
-	CreateBuffer(&indexBuff, &indexMap, sizeIB);
-	// 全インデックスに対して
-	copy(indices.begin(), indices.end(), indexMap);	// インデックスをコピー
-	// インデックスバッファビューの作成
-	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
-	ibView.Format = DXGI_FORMAT_R16_UINT;
-	ibView.SizeInBytes = sizeIB;
+	mesh->CreateIndexBuffer();
 
 	// 定数バッファ生成
 	CreateBuffer(&constBuffer, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
@@ -142,8 +132,6 @@ void Model::Draw(const WorldTransform& worldTransform)
 	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	// インデックスバッファの設定
-	cmdList->IASetIndexBuffer(&ibView);
 	// シェーダリソースビューをセット
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
 	cmdList->SetGraphicsRootDescriptorTable(0, spCommon->GetGpuHandle(material.GetSprite()->GetTextureIndex()));

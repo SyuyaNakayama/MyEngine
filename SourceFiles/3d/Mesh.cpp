@@ -125,10 +125,26 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
 	if (isSmooth) { CalculateSmoothedVertexNormals(); }
 }
 
+void Mesh::CreateIndexBuffer()
+{
+	UINT16* indexMap = nullptr;
+	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
+	// インデックスバッファ生成
+	CreateBuffer(&indexBuff, &indexMap, sizeIB);
+	// 全インデックスに対して
+	copy(indices.begin(), indices.end(), indexMap);	// インデックスをコピー
+	// インデックスバッファビューの作成
+	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeIB;
+}
+
 void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
+	// インデックスバッファの設定
+	cmdList->IASetIndexBuffer(&ibView);
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
 }

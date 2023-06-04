@@ -24,6 +24,8 @@ private:
 	std::vector<VertexData> vertices;	// 頂点データ配列
 	std::vector<UINT16> indices;		// 頂点インデックス配列
 	std::unordered_map<UINT16, std::vector<UINT16>> smoothData;	// 頂点座標スムージング用データ
+	ComPtr<ID3D12Resource> indexBuff;	// インデックスバッファ
+	D3D12_INDEX_BUFFER_VIEW ibView{};	// インデックスバッファビュー
 
 public:
 	bool isSmooth = false;	// スムージング
@@ -33,6 +35,6 @@ public:
 
 	void LoadOBJ(const std::string& modelName, bool isSmooth);
 	const std::vector<VertexData>& GetVertices() { return vertices; }
-	const std::vector<UINT16>& GetIndices() { return indices; }
+	void CreateIndexBuffer();
 	void Draw();
 };

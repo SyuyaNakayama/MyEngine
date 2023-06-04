@@ -37,12 +37,10 @@ private:
 	Material material;
 
 	ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
-	ComPtr<ID3D12Resource> indexBuff;	// インデックスバッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// 定数バッファ
-	Mesh::VertexData* vertMap = nullptr;		// 頂点バッファのマップ
-	ConstBufferData* constMap = nullptr;
 	D3D12_VERTEX_BUFFER_VIEW vbView{};	// 頂点バッファビュー
-	D3D12_INDEX_BUFFER_VIEW ibView{};	// インデックスバッファビュー
+	Mesh::VertexData* vertMap = nullptr;		// 頂点バッファのマップ
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffer;	// 定数バッファ
+	ConstBufferData* constMap = nullptr;
 
 	void CreateBuffers();
 
