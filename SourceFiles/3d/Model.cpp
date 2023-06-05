@@ -11,31 +11,13 @@ unique_ptr<LightGroup> Model::lightGroup;
 list<unique_ptr<Mesh>> Model::meshes;
 ViewProjection* Model::viewProjection = nullptr;
 
-void Model::CreateBuffers()
-{
-	auto& vertices = mesh->GetVertices();
-	UINT sizeVB = static_cast<UINT>(sizeof(Mesh::VertexData) * vertices.size());
-	// 頂点バッファ生成
-	CreateBuffer(&vertBuff, &vertMap, sizeVB);
-	// 全頂点に対して
-	copy(vertices.begin(), vertices.end(), vertMap); // 座標をコピー
-	// 頂点バッファビューの作成
-	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
-	vbView.SizeInBytes = sizeVB;
-	vbView.StrideInBytes = sizeof(Mesh::VertexData);
-
-	mesh->CreateIndexBuffer();
-
-}
-
 void Model::StaticInitialize()
 {
 	PipelineManager pipelineManager;
-	pipelineManager.LoadShaders(L"OBJVertexShader", L"OBJPixelShader");
+	pipelineManager.LoadShaders(L"ObjVS", L"ObjPS");
 	pipelineManager.AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineManager.AddInputLayout("NORMAL", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineManager.AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
-	pipelineManager.AddInputLayout("COLOR", DXGI_FORMAT_R32G32B32A32_FLOAT);
 	pipelineManager.InitDepthStencilState();
 	pipelineManager.InitDSVFormat();
 	pipelineManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA);
@@ -57,20 +39,17 @@ std::unique_ptr<Model> Model::Create(const string& modelName, bool smoothing)
 
 	for (auto& mesh : meshes)
 	{
-		if (mesh->modelName.find(modelName) == string::npos) { continue; }
-		if (mesh->isSmooth != smoothing) { continue; } // スムージングあり/なしを区別
+		if (!mesh->IsLoaded(modelName, smoothing)) { continue; }
 		// 既に読み込んでいたモデルの場合
 		newModel->mesh = mesh.get();
-		newModel->material.Load(mesh->directoryPath, mesh->materialFileName);
-		newModel->CreateBuffers();
+		newModel->material.Load(mesh.get());
 		return newModel;
 	}
 
 	unique_ptr<Mesh> newMesh = make_unique<Mesh>();
 	newMesh->LoadOBJ(modelName, smoothing);
 	newModel->mesh = newMesh.get();
-	newModel->material.Load(newMesh->directoryPath, newMesh->materialFileName);
-	newModel->CreateBuffers();
+	newModel->material.Load(newMesh.get());
 	meshes.push_back(move(newMesh));
 	return newModel;
 }
@@ -98,32 +77,13 @@ void Model::PreDraw()
 
 void Model::Update()
 {
-	Sprite* sprite = material.GetSprite();
-	sprite->Update();
-	Vector2 spriteSizeRate =
-	{
-		sprite->GetTextureSize().x / sprite->GetSize().x,
-		sprite->GetTextureSize().y / sprite->GetSize().y
-	};
-
-	auto& vertices = mesh->GetVertices();
-	for (size_t i = 0; i < vertices.size(); i++)
-	{
-		Vector2 uv = vertices[i].uv;
-		uv.x *= spriteSizeRate.x;
-		uv.y *= spriteSizeRate.y;
-		uv += sprite->GetVerticesUv(Sprite::VertexNumber::LT);
-		vertMap[i].uv = uv;
-		vertMap[i].color = sprite->GetColor();
-	}
+	material.Update();
 }
 
 void Model::Draw(const WorldTransform& worldTransform)
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView(1, worldTransform.constBuffer->GetGPUVirtualAddress());
-	// 頂点バッファの設定
-	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	material.Draw();
 	mesh->Draw();
 }

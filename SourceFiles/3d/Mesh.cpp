@@ -123,12 +123,25 @@ void Mesh::LoadOBJ(const std::string& modelName_, bool isSmooth_)
 	file.close();
 
 	if (isSmooth) { CalculateSmoothedVertexNormals(); }
+
+	CreateBuffers();
 }
 
-void Mesh::CreateIndexBuffer()
+void Mesh::CreateBuffers()
 {
-	UINT16* indexMap = nullptr;
+	UINT sizeVB = static_cast<UINT>(sizeof(Mesh::VertexData) * vertices.size());
+	VertexData* vertMap = nullptr;	// 頂点バッファのマップ
+	// 頂点バッファ生成
+	CreateBuffer(&vertBuff, &vertMap, sizeVB);
+	// 全頂点に対して
+	copy(vertices.begin(), vertices.end(), vertMap); // 座標をコピー
+	// 頂点バッファビューの作成
+	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
+	vbView.SizeInBytes = sizeVB;
+	vbView.StrideInBytes = sizeof(Mesh::VertexData);
+	
 	UINT sizeIB = static_cast<UINT>(sizeof(UINT16) * indices.size());
+	UINT16* indexMap = nullptr;
 	// インデックスバッファ生成
 	CreateBuffer(&indexBuff, &indexMap, sizeIB);
 	// 全インデックスに対して
@@ -143,8 +156,17 @@ void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
+	// 頂点バッファの設定
+	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファの設定
 	cmdList->IASetIndexBuffer(&ibView);
 	// 描画コマンド
 	cmdList->DrawIndexedInstanced((UINT)indices.size(), 1, 0, 0, 0);
+}
+
+bool Mesh::IsLoaded(const std::string& modelName_, bool isSmooth_)
+{
+	bool flag1 = modelName == modelName_;
+	bool flag2 = isSmooth == isSmooth_; // スムージングあり/なしを区別
+	return flag1 && flag2;
 }

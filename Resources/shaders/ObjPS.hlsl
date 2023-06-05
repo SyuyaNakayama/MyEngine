@@ -1,4 +1,4 @@
-#include "OBJShaderHeader.hlsli"
+#include "Obj.hlsli"
 
 Texture2D<float4> tex : register(t0);  // 0番スロットに設定されたテクスチャ
 SamplerState smp : register(s0);      // 0番スロットに設定されたサンプラー
@@ -14,7 +14,7 @@ float4 main(VSOutput input) : SV_TARGET
 	// 環境反射光
 	float3 ambient = m_ambient;
 	// シェーディングによる色
-	float4 shadecolor = float4(ambientColor * ambient, m_alpha);
+	float4 shadecolor = float4(ambientColor * ambient, 1.0f);
 	// 平行光源
 	for (int i = 0; i < DIRLIGHT_NUM; i++)
 	{
@@ -108,6 +108,6 @@ float4 main(VSOutput input) : SV_TARGET
 		shadecolor.rgb -= atten;
 	}
 
-	shadecolor.a = m_alpha;
-	return shadecolor * texcolor * input.spriteColor;
+	shadecolor.a = 1.0f;
+	return shadecolor * texcolor * color;
 }

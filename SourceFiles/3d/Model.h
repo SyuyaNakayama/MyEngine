@@ -24,12 +24,6 @@ private:
 	Mesh* mesh = nullptr; // メッシュのポインタ
 	Material material;
 
-	ComPtr<ID3D12Resource> vertBuff;	// 頂点バッファ
-	D3D12_VERTEX_BUFFER_VIEW vbView{};	// 頂点バッファビュー
-	Mesh::VertexData* vertMap = nullptr;		// 頂点バッファのマップ
-
-	void CreateBuffers();
-
 public:
 	// 静的初期化
 	static void StaticInitialize();

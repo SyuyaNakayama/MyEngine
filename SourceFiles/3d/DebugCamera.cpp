@@ -31,7 +31,7 @@ void DebugCamera::Update()
 	// マウスの中ボタンが押されていたらカメラを平行移動させる
 	if (input->IsInput(Mouse::Middle))
 	{
-		Vector3 move = Vector3(-(float)mouseMove.lX, (float)mouseMove.lY) / 25.0f;
+		Vector3 move = Vector3(-(float)mouseMove.lX, (float)mouseMove.lY) / 75.0f;
 		move = Quaternion::RotateVector(move, rotQ);
 
 		viewProjection.CameraMove(move);

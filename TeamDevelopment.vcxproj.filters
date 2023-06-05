@@ -89,7 +89,7 @@
     <None Include="Resources\shaders\Sprite.hlsli">
       <Filter>シェーダー ファイル\sprite</Filter>
     </None>
-    <None Include="Resources\shaders\OBJShaderHeader.hlsli">
+    <None Include="Resources\shaders\Obj.hlsli">
       <Filter>シェーダー ファイル\object</Filter>
     </None>
     <None Include="Resources\shaders\PostEffect.hlsli">
@@ -106,10 +106,10 @@
     <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
       <Filter>シェーダー ファイル\sprite</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJPixelShader.hlsl">
+    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
       <Filter>シェーダー ファイル\object</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\shaders\OBJVertexShader.hlsl">
+    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
       <Filter>シェーダー ファイル\object</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\PostEffectPS.hlsl">

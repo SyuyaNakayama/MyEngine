@@ -3,6 +3,7 @@
 #include <sstream>
 #include "D3D12Common.h"
 #include "SpriteCommon.h"
+#include "Mesh.h"
 using namespace std;
 
 void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
@@ -16,10 +17,10 @@ void LoadColorRGBStream(istringstream& stream, ColorRGB& color)
 	color.b = colorTemp.z;
 }
 
-void Material::Load(const string& directoryPath, const string& filename)
+void Material::Load(Mesh* mesh)
 {
 	ifstream file;
-	file.open(directoryPath + filename);
+	file.open(mesh->directoryPath + mesh->materialFileName);
 	assert(!file.fail());
 
 	string line;
@@ -36,8 +37,9 @@ void Material::Load(const string& directoryPath, const string& filename)
 		if (key == "Ks") { LoadColorRGBStream(line_stream, specular); }
 		if (key == "map_Kd")
 		{
+			string textureFilename;
 			line_stream >> textureFilename;
-			string path = directoryPath;
+			string path = mesh->directoryPath;
 			path.erase(path.begin(), path.begin() + 10);
 			sprite = Sprite::Create(path + textureFilename);
 		}
@@ -50,7 +52,30 @@ void Material::Load(const string& directoryPath, const string& filename)
 	constMap->ambient = ambient;
 	constMap->diffuse = diffuse;
 	constMap->specular = specular;
-	constMap->alpha = 1.0f;
+	constMap->tiling = { 1,1 };
+	constMap->uvOffset = { 0,0 };
+	constMap->color = { 1,1,1,1 };
+}
+
+void Material::Update()
+{
+	sprite->Update();
+	constMap->tiling =
+	{
+		sprite->GetTextureSize().x / sprite->GetSize().x,
+		sprite->GetTextureSize().y / sprite->GetSize().y
+	};
+
+	constMap->uvOffset =
+	{
+		sprite->GetTextureLeftTop().x / sprite->GetSize().x,
+		sprite->GetTextureLeftTop().y / sprite->GetSize().y
+	};
+
+	constMap->color = sprite->GetColor();
+	constMap->ambient = ambient;
+	constMap->diffuse = diffuse;
+	constMap->specular = specular;
 }
 
 void Material::Draw()
