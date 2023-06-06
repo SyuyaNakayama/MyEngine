@@ -5,9 +5,9 @@ void SpriteAnimation::Initialize(const std::string& textureName, size_t spriteWi
 	sprite = Sprite::Create(textureName);
 	width = spriteWidth;
 	interval = animationIntervel;
-	animeNumMax = (size_t)sprite->GetSize().x / width;
-	sprite->SetSize({ (float)width,sprite->GetSize().y });
-	sprite->SetTextureSize({ (float)width,sprite->GetTextureSize().y });
+	animeNumMax = (size_t)sprite->size.x / width;
+	sprite->size = { (float)width,sprite->size.y };
+	sprite->textureSize = { (float)width,sprite->textureSize.y };
 	sprite->Update();
 }
 
@@ -15,6 +15,6 @@ void SpriteAnimation::Update()
 {
 	if (!interval.CountDown()) { return; }
 	if (++animeNum >= animeNumMax) { animeNum = 0; }
-	sprite->SetTextureLeftTop({ (float)animeNum * width ,0 });
+	sprite->textureLeftTop = { (float)animeNum * width ,0 };
 	sprite->Update();
 }

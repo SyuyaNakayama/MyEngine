@@ -11,8 +11,6 @@ void TestScene::Initialize()
 	Model::SetViewProjection(&debugCamera.GetViewProjection());
 	models[0]->GetMatrial()->SetSprite(Sprite::Create("stages/floor.png"));
 	models[1]->GetMatrial()->SetSprite(Sprite::Create("stages/floor.png"));
-	Sprite* modelSprite = models[0]->GetMatrial()->GetSprite();
-	modelSprite->SetTextureSize(modelSprite->GetTextureSize() * 1.01f);
 }
 
 void TestScene::Update()
@@ -20,6 +18,8 @@ void TestScene::Update()
 	debugCamera.Update();
 	worldTransforms[0].Update();
 	worldTransforms[1].Update();
+	Sprite* modelSprite = models[0]->GetMatrial()->GetSprite();
+	modelSprite->textureSize *= 1.01f ;
 	models[0]->Update();
 	models[1]->Update();
 }

@@ -62,17 +62,17 @@ void Material::Update()
 	sprite->Update();
 	constMap->tiling =
 	{
-		sprite->GetTextureSize().x / sprite->GetSize().x,
-		sprite->GetTextureSize().y / sprite->GetSize().y
+		sprite->textureSize.x / sprite->size.x,
+		sprite->textureSize.y / sprite->size.y
 	};
 
 	constMap->uvOffset =
 	{
-		sprite->GetTextureLeftTop().x / sprite->GetSize().x,
-		sprite->GetTextureLeftTop().y / sprite->GetSize().y
+		sprite->textureLeftTop.x / sprite->size.x,
+		sprite->textureLeftTop.y / sprite->size.y
 	};
 
-	constMap->color = sprite->GetColor();
+	constMap->color = sprite->color;
 	constMap->ambient = ambient;
 	constMap->diffuse = diffuse;
 	constMap->specular = specular;

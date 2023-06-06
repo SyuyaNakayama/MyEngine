@@ -38,6 +38,7 @@ public:
 	static LightGroup* GetLightGroup() { return lightGroup.get(); }
 	static void SetViewProjection(ViewProjection* viewProjection_) { viewProjection = viewProjection_; }
 	static ViewProjection* GetViewProjection() { return viewProjection; }
+	
 	Mesh* GetMesh() { return mesh; }
 	Material* GetMatrial() { return &material; }
 	void Update();

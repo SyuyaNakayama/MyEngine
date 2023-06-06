@@ -4,7 +4,7 @@
 void FadeManager::Initialize()
 {
 	sprite = Sprite::Create("white1x1.png");
-	sprite->SetSize(WindowsAPI::GetInstance()->WIN_SIZE);
+	sprite->size = WindowsAPI::GetInstance()->WIN_SIZE;
 }
 
 void FadeManager::Update()
@@ -24,6 +24,6 @@ void FadeManager::Update()
 		fadePerFlame = -fadePerFlame;
 		isFade = false;
 	}
-	sprite->SetColor({ 0,0,0,alpha });
+	sprite->color.a = alpha;
 	sprite->Update();
 }
