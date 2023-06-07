@@ -22,8 +22,8 @@ void Model::StaticInitialize()
 	pipelineManager.InitDSVFormat();
 	pipelineManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA);
 	pipelineManager.SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::DescriptorTable);
-	for (size_t i = 0; i < 4; i++) { pipelineManager.AddRootParameter(PipelineManager::RootParamType::CBV); }
+	pipelineManager.AddRootParameter(RootParamType::DescriptorTable);
+	for (size_t i = 0; i < 4; i++) { pipelineManager.AddRootParameter(RootParamType::CBV); }
 	pipelineManager.CreatePipeline(pipelinestate, rootsignature);
 	// ライトグループ生成
 	lightGroup = LightGroup::Create();
@@ -69,10 +69,8 @@ void Model::PreDraw()
 	lightGroup->Draw();
 	// カメラ
 	cmdList->SetGraphicsRootConstantBufferView(4, viewProjection->constBuffer->GetGPUVirtualAddress());
-	// デスクリプタヒープの配列
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-	ID3D12DescriptorHeap* ppHeaps[] = { spCommon->GetDescriptorHeap() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	// デスクリプタヒープセット
+	SpriteCommon::GetInstance()->SetDescriptorHeaps();
 }
 
 void Model::Update()

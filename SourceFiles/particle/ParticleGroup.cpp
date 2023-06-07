@@ -56,8 +56,8 @@ void ParticleGroup::Draw()
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// デスクリプタヒープの配列
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-	ID3D12DescriptorHeap* ppHeaps[] = { spCommon->GetDescriptorHeap() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	// デスクリプタヒープセット
+	spCommon->SetDescriptorHeaps();
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, spCommon->GetGpuHandle(textureIndex));
 	// 描画コマンド

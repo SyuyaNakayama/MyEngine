@@ -24,8 +24,8 @@ void SpriteCommon::Initialize()
 	pipelineManager.AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA);
 	pipelineManager.SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::CBV);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::DescriptorTable);
+	pipelineManager.AddRootParameter(RootParamType::CBV);
+	pipelineManager.AddRootParameter(RootParamType::DescriptorTable);
 	pipelineManager.CreatePipeline(pipelineState, rootSignature);
 	
 	ID3D12Device* device = DirectXCommon::GetInstance()->GetDevice();
@@ -41,6 +41,14 @@ size_t SpriteCommon::GetIncrementSize() const
 	ID3D12Device* device = DirectXCommon::GetInstance()->GetDevice();
 	UINT incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	return (size_t)incrementSize * textureIndex_;
+}
+
+void SpriteCommon::SetDescriptorHeaps()
+{
+	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
+	// デスクリプタヒープの配列
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 }
 
 uint32_t SpriteCommon::LoadTexture(const std::string& FILE_NAME, uint32_t mipLevels)

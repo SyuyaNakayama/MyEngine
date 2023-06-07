@@ -13,8 +13,8 @@ void PostEffect::CreateGraphicsPipelineState()
 	pipelineManager.AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32_FLOAT);
 	pipelineManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_SRC_ALPHA, D3D12_BLEND_INV_SRC_ALPHA);
 	pipelineManager.SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::CBV);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::DescriptorTable);
+	pipelineManager.AddRootParameter(RootParamType::CBV);
+	pipelineManager.AddRootParameter(RootParamType::DescriptorTable);
 	pipelineManager.CreatePipeline(pipelineState, rootSignature);
 }
 

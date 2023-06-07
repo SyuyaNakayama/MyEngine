@@ -33,10 +33,11 @@ public:
 	uint32_t LoadTexture(const std::string& FILE_NAME, uint32_t mipLevels = MIP_LEVELS_DEFAULT);
 	void SetTextureCommands(uint32_t index);
 	static void PreDraw();
-	static void PostDraw() {};
+	static void PostDraw() {}
 	void IncrementTextureIndex() { textureIndex_++; }
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle(UINT index) const { return textures_[index].gpuHandle; }
 	static ID3D12DescriptorHeap* GetDescriptorHeap() { return srvHeap.Get(); }
 	size_t GetIncrementSize() const;
 	ID3D12Resource* GetTextureBuffer(uint32_t index) const { return textures_[index].buffer.Get(); }
+	void SetDescriptorHeaps();
 };

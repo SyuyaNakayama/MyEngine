@@ -49,9 +49,8 @@ void ImGuiManager::End() { Render(); }
 void ImGuiManager::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-
-	ID3D12DescriptorHeap* ppHeaps[] = { SpriteCommon::GetInstance()->GetDescriptorHeap() };
-	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	// デスクリプタヒープセット
+	SpriteCommon::GetInstance()->SetDescriptorHeaps();
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), cmdList);
 }
 

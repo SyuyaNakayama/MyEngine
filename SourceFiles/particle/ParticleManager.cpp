@@ -32,8 +32,8 @@ void ParticleManager::InitializeGraphicsPipeline()
 	pipelineManager.InitDSVFormat();
 	pipelineManager.SetDepthWriteMask(D3D12_DEPTH_WRITE_MASK_ZERO);
 	pipelineManager.SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::CBV);
-	pipelineManager.AddRootParameter(PipelineManager::RootParamType::DescriptorTable);
+	pipelineManager.AddRootParameter(RootParamType::CBV);
+	pipelineManager.AddRootParameter(RootParamType::DescriptorTable);
 	pipelineManager.CreatePipeline(pipelinestate, rootsignature);
 }
 

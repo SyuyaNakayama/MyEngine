@@ -40,6 +40,8 @@ public:
 	}
 };
 
+enum class RootParamType { CBV, DescriptorTable };
+
 struct PipelineManager
 {
 private:
@@ -53,8 +55,6 @@ private:
 	std::vector<CD3DX12_ROOT_PARAMETER> rootParams;
 
 public:
-	enum class RootParamType { CBV, DescriptorTable };
-
 	void LoadShaders(std::wstring vsShaderName, std::wstring psShaderName, std::wstring gsShaderName = L"");
 	void AddInputLayout(LPCSTR semanticName, DXGI_FORMAT format);
 	void AddRootParameter(RootParamType paramType);

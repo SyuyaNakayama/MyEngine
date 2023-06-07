@@ -2,7 +2,6 @@
 #include "D3D12Common.h"
 #include <fstream>
 #include <sstream>
-#include "SpriteCommon.h"
 using namespace std;
 
 void LoadVector3Stream(istringstream& stream, Vector3& vec)
@@ -155,7 +154,6 @@ void Mesh::CreateBuffers()
 void Mesh::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
 	// インデックスバッファの設定

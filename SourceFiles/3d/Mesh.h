@@ -14,6 +14,7 @@ private:
 		Vector2 uv;  // uv座標
 	};
 
+	friend Material;
 	// Microsoft::WRL::を省略
 	template<class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -34,7 +35,6 @@ private:
 	void CreateBuffers();
 
 public:
-	friend Material;
 	void LoadOBJ(const std::string& modelName, bool isSmooth);
 	void Draw();
 	bool IsLoaded(const std::string& modelName, bool isSmooth);
