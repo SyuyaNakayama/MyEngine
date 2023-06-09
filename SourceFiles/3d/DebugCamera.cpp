@@ -1,14 +1,13 @@
 #include "DebugCamera.h"
 #include "Input.h"
 #include "WindowsAPI.h"
-#include "ImGuiManager.h"
 
 void DebugCamera::Initialize(Vector3 targetPos, float distance_)
 {
 	distance = distance_;
-	viewProjection.target = viewProjection.eye = targetPos;
-	viewProjection.eye.z -= distance;
-	viewProjection.Initialize();
+	target = eye = targetPos;
+	eye.z -= distance;
+	ViewProjection::Initialize();
 }
 
 void DebugCamera::Update()
@@ -34,7 +33,7 @@ void DebugCamera::Update()
 		Vector3 move = Vector3(-(float)mouseMove.lX, (float)mouseMove.lY) / 75.0f;
 		move = Quaternion::RotateVector(move, rotQ);
 
-		viewProjection.CameraMove(move);
+		CameraMove(move);
 		dirty = true;
 	}
 
@@ -64,6 +63,6 @@ void DebugCamera::Update()
 	vUp = Quaternion::RotateVector(vUp, rotQ);
 
 	// 注視点からずらした位置に視点座標を決定
-	viewProjection.eye = viewProjection.target + vTargetEye;
-	viewProjection.up = vUp;
+	eye = target + vTargetEye;
+	up = vUp;
 }

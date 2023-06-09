@@ -8,7 +8,7 @@ void TestScene::Initialize()
 	worldTransforms[1].Initialize();
 	worldTransforms[1].translation.x = 4.0f;
 	debugCamera.Initialize();
-	Model::SetViewProjection(&debugCamera.GetViewProjection());
+	Model::SetViewProjection(&debugCamera);
 	std::unique_ptr<Sprite> modelSprite = Sprite::Create("floor.png");
 	modelSprite->textureSize *= 2.0f ;
 	Material* material[2] = { models[0]->GetMaterial() ,models[1]->GetMaterial() };
