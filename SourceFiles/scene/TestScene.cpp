@@ -9,10 +9,11 @@ void TestScene::Initialize()
 	worldTransforms[1].translation.x = 4.0f;
 	debugCamera.Initialize();
 	Model::SetViewProjection(&debugCamera.GetViewProjection());
-	models[0]->GetMatrial()->SetSprite(Sprite::Create("stages/floor.png"));
-	models[1]->GetMatrial()->SetSprite(Sprite::Create("stages/floor.png"));
-	Sprite* modelSprite = models[0]->GetMatrial()->GetSprite();
-	modelSprite->textureSize *= 1.01f ;
+	std::unique_ptr<Sprite> modelSprite = Sprite::Create("floor.png");
+	modelSprite->textureSize *= 2.0f ;
+	Material* material[2] = { models[0]->GetMaterial() ,models[1]->GetMaterial() };
+	material[0]->SetSprite(move(modelSprite));
+	material[1]->SetSprite(Sprite::Create("floor.png"));
 }
 
 void TestScene::Update()

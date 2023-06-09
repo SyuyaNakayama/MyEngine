@@ -105,6 +105,7 @@
     <None Include="Resources\shaders\Obj.hlsli" />
     <None Include="Resources\shaders\Particle.hlsli" />
     <None Include="Resources\shaders\PostEffect.hlsli" />
+    <None Include="Resources\shaders\PostEffectFunctions.hlsli" />
     <None Include="Resources\shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>

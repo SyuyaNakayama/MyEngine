@@ -39,7 +39,7 @@ public:
 	static void SetViewProjection(ViewProjection* viewProjection_) { viewProjection = viewProjection_; }
 	static ViewProjection* GetViewProjection() { return viewProjection; }
 	
-	Material* GetMatrial() { return &material; }
+	Material* GetMaterial() { return &material; }
 	void Update();
 	void Draw(const WorldTransform& worldTransform);
 };
