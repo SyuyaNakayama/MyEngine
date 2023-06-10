@@ -1,5 +1,4 @@
 #include "Sprite.h"
-#include "SpriteCommon.h"
 #include "D3D12Common.h"
 
 // 平行投影行列
@@ -16,7 +15,7 @@ Matrix4 OrthoGraphic(const Vector2& windowSize)
 
 const Matrix4 Sprite::matProj = OrthoGraphic(WindowsAPI::WIN_SIZE);
 
-void Sprite::Initialize(uint32_t textureIndex_)
+void Sprite::Initialize(uint32_t textureIndex)
 {
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
@@ -37,7 +36,7 @@ void Sprite::Initialize(uint32_t textureIndex_)
 	CreateBuffer(constBuff.GetAddressOf(),
 		&constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
-	textureIndex = textureIndex_;
+	tex = SpriteCommon::GetTextureData(textureIndex);
 	AdjustTextureSize();
 	size = textureSize;
 }
@@ -51,10 +50,9 @@ std::unique_ptr<Sprite> Sprite::Create(const std::string& FILE_NAME)
 
 void Sprite::AdjustTextureSize()
 {
-	ID3D12Resource* textureBuffer = SpriteCommon::GetInstance()->GetTextureBuffer(textureIndex);
-	assert(textureBuffer);
+	assert(tex.buffer);
 
-	D3D12_RESOURCE_DESC resDesc = textureBuffer->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = tex.buffer->GetDesc();
 
 	textureSize.x = static_cast<float>(resDesc.Width);
 	textureSize.y = static_cast<float>(resDesc.Height);
@@ -77,8 +75,7 @@ void Sprite::Update()
 	vertices[(size_t)VertexNumber::RB].pos = { right, bottom };
 	vertices[(size_t)VertexNumber::RT].pos = { right, top };
 
-	ID3D12Resource* textureBuffer = SpriteCommon::GetInstance()->GetTextureBuffer(textureIndex);
-	D3D12_RESOURCE_DESC resDesc = textureBuffer->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = tex.buffer->GetDesc();
 
 	float tex_left = textureLeftTop.x / resDesc.Width;
 	float tex_right = (textureLeftTop.x + textureSize.x) / resDesc.Width;
@@ -107,9 +104,8 @@ void Sprite::Draw()
 	if (isInvisible) { return; }
 
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	SpriteCommon* spriteCommon = SpriteCommon::GetInstance();
-
-	spriteCommon->SetTextureCommands(textureIndex);
+	
+	cmdList->SetGraphicsRootDescriptorTable(1, tex.gpuHandle);
 
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vbView);

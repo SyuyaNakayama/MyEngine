@@ -9,6 +9,7 @@ string SpriteCommon::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
 ComPtr<ID3D12RootSignature> SpriteCommon::rootSignature;
 ComPtr<ID3D12PipelineState> SpriteCommon::pipelineState;
 ComPtr<ID3D12DescriptorHeap> SpriteCommon::srvHeap;
+vector<TextureData> SpriteCommon::textures;
 
 SpriteCommon* SpriteCommon::GetInstance()
 {
@@ -36,13 +37,6 @@ void SpriteCommon::Initialize()
 	Result result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 }
 
-size_t SpriteCommon::GetIncrementSize() const
-{
-	ID3D12Device* device = DirectXCommon::GetInstance()->GetDevice();
-	UINT incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	return (size_t)incrementSize * textureIndex_;
-}
-
 void SpriteCommon::SetDescriptorHeaps()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
@@ -53,10 +47,12 @@ void SpriteCommon::SetDescriptorHeaps()
 
 uint32_t SpriteCommon::LoadTexture(const std::string& FILE_NAME, uint32_t mipLevels)
 {
+	uint32_t textureIndex = textures.size();
+
 	// テクスチャの重複読み込みを検出
-	for (uint32_t i = 0; i < textureIndex_; i++)
+	for (uint32_t i = 0; i < textureIndex; i++)
 	{
-		if (textures_[i].fileName.find(FILE_NAME) == string::npos) { continue; }
+		if (textures[i].fileName.find(FILE_NAME) == string::npos) { continue; }
 		return i;
 	}
 
@@ -85,6 +81,8 @@ uint32_t SpriteCommon::LoadTexture(const std::string& FILE_NAME, uint32_t mipLev
 		metadata.format, metadata.width, (UINT)metadata.height,
 		(UINT16)metadata.arraySize, (UINT16)metadata.mipLevels);
 
+	TextureData texture;
+
 	ID3D12Device* device = DirectXCommon::GetInstance()->GetDevice();
 	result = device->CreateCommittedResource(
 		&CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0),
@@ -92,12 +90,12 @@ uint32_t SpriteCommon::LoadTexture(const std::string& FILE_NAME, uint32_t mipLev
 		&textureResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&textures_[textureIndex_].buffer));
+		IID_PPV_ARGS(&texture.buffer));
 
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
 		const Image* img = scratchImg.GetImage(i, 0, 0);
-		result = textures_[textureIndex_].buffer->WriteToSubresource((UINT)i, nullptr, img->pixels,
+		result = texture.buffer->WriteToSubresource((UINT)i, nullptr, img->pixels,
 			(UINT)img->rowPitch, (UINT)img->slicePitch);
 	}
 
@@ -109,24 +107,20 @@ uint32_t SpriteCommon::LoadTexture(const std::string& FILE_NAME, uint32_t mipLev
 	else { srvDesc.Texture2D.MipLevels = mipLevels; }
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE srvHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetCPUDescriptorHandleForHeapStart(), textureIndex_,
+		srvHeap->GetCPUDescriptorHandleForHeapStart(), textureIndex,
 		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 
-	device->CreateShaderResourceView(GetTextureBuffer(textureIndex_), &srvDesc, srvHandle);
+	device->CreateShaderResourceView(texture.buffer.Get(), &srvDesc, srvHandle);
 
-	textures_[textureIndex_].fileName = FILE_NAME;
-	textures_[textureIndex_].cpuHandle = srvHandle;
-	textures_[textureIndex_].gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
-		srvHeap->GetGPUDescriptorHandleForHeapStart(), textureIndex_,
+	texture.fileName = FILE_NAME;
+	texture.cpuHandle = srvHandle;
+	texture.gpuHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		srvHeap->GetGPUDescriptorHandleForHeapStart(), textureIndex,
 		device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV));
 
-	return textureIndex_++;
-}
+	textures.push_back(texture);
 
-void SpriteCommon::SetTextureCommands(uint32_t index)
-{
-	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
-	cmdList->SetGraphicsRootDescriptorTable(1, textures_[index].gpuHandle);
+	return textureIndex;
 }
 
 void SpriteCommon::PreDraw()

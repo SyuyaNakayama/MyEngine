@@ -1,8 +1,10 @@
 #include "ImGuiManager.h"
 #include <imgui_impl_win32.h>
 #include <imgui_impl_dx12.h>
-#include "SpriteCommon.h"
+#include "D3D12Common.h"
 using namespace ImGui;
+
+Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> ImGuiManager::srvHeap;
 
 void ImGuiManager::Initialize()
 {
@@ -16,20 +18,20 @@ void ImGuiManager::Initialize()
 
 	ImGui_ImplWin32_Init(WindowsAPI::GetInstance()->GetHwnd());
 
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-	ID3D12DescriptorHeap* srvHeap = spCommon->GetDescriptorHeap();
+	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc{};
+	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	srvHeapDesc.NumDescriptors = 1;
+	Result result = DirectXCommon::GetInstance()->GetDevice()->
+		CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-	srvHandle.ptr += spCommon->GetIncrementSize();
-	srvGpuHandle.ptr += spCommon->GetIncrementSize();
 
 	ImGui_ImplDX12_Init(dxCommon->GetDevice(),
 		static_cast<int>(dxCommon->GetBackBufferCount()),
-		DXGI_FORMAT_R8G8B8A8_UNORM, srvHeap,
+		DXGI_FORMAT_R8G8B8A8_UNORM, srvHeap.Get(),
 		srvHandle, srvGpuHandle);
-
-	spCommon->IncrementTextureIndex();
 
 	ImGuiIO& io = GetIO();
 	// 標準フォントを追加する
@@ -50,7 +52,8 @@ void ImGuiManager::Draw()
 {
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	// デスクリプタヒープセット
-	SpriteCommon::GetInstance()->SetDescriptorHeaps();
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
+	cmdList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	ImGui_ImplDX12_RenderDrawData(GetDrawData(), cmdList);
 }
 

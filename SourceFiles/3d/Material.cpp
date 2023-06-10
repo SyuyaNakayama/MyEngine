@@ -84,5 +84,5 @@ void Material::Draw()
 	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
 	SpriteCommon* spCommon = SpriteCommon::GetInstance();
-	cmdList->SetGraphicsRootDescriptorTable(0, spCommon->GetGpuHandle(sprite->GetTextureIndex()));
+	cmdList->SetGraphicsRootDescriptorTable(0, sprite->GetGPUHandle());
 }

@@ -1,11 +1,8 @@
 #pragma once
 #include <array>
-#include <wrl.h>
-#include <d3d12.h>
-#include <string>
 #include <memory>
-#include "Matrix4.h"
 #include "Color.h"
+#include "SpriteCommon.h"
 
 struct Sprite
 {
@@ -43,15 +40,15 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff;
 	ConstBufferData* constMap = nullptr;
 	Vertex* vertMap = nullptr;
-	uint32_t textureIndex = 0;
 	Matrix4 matWorld;
+	TextureData tex;
 
 	void AdjustTextureSize();
 	void Initialize(uint32_t textureIndex);
 
 public:
 	static std::unique_ptr<Sprite> Create(const std::string& FILE_NAME);
-	uint32_t GetTextureIndex() { return textureIndex; }
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() { return tex.gpuHandle; }
 	void Update();
 	void Draw();
 };
