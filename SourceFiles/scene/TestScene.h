@@ -6,7 +6,7 @@
 class TestScene : public BaseScene
 {
 	std::unique_ptr<Model> models[2];
-	WorldTransform worldTransforms[2];
+	WorldTransform worldTransforms[3];
 	std::unique_ptr<Sprite> sprites[2];
 	DiffuseParticle::AddProp particleProps[2];
 
