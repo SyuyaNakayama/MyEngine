@@ -182,6 +182,8 @@ private:
 	void StartGamePadControl();
 
 public:
+	static const int PADSTICK_MAX_VAL = 1000;
+	
 	struct MouseMove
 	{
 		long lX;
@@ -198,8 +200,8 @@ public:
 		long lt_rt;
 		Vector2 dirKey;
 
-		// それぞれの値を-1.0f~1.0fの範囲にする
-		void Normalize();
+		Vector2 LNormalize(); // Lスティックの数値を正規化したものを返す
+		Vector2 RNormalize(); // Rスティックの数値を正規化したものを返す
 	};
 
 	static Input* GetInstance();

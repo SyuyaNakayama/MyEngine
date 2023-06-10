@@ -82,8 +82,8 @@ bool SetUpGamePadProperty(LPDIRECTINPUTDEVICE8 device)
 	diprg.diph.dwHeaderSize = sizeof(diprg.diph);
 	diprg.diph.dwHow = DIPH_BYOFFSET;
 	diprg.diph.dwObj = DIJOFS_X;
-	diprg.lMin = -1000;
-	diprg.lMax = 1000;
+	diprg.lMin = -Input::PADSTICK_MAX_VAL;
+	diprg.lMax = Input::PADSTICK_MAX_VAL;
 	if (FAILED(device->SetProperty(DIPROP_RANGE, &diprg.diph))) { return false; }
 
 	// Y軸の値の範囲設定
@@ -139,10 +139,6 @@ void Input::StartGamePadControl()
 	// デバイスが生成されてない
 	if (!joystick) { return; }
 
-	// 制御開始
-	Result result;
-	result = joystick->Acquire();
-
 	DIDEVCAPS cap;
 	joystick->GetCapabilities(&cap);
 	// ポーリング判定
@@ -150,7 +146,8 @@ void Input::StartGamePadControl()
 	{
 		DWORD error = GetLastError();
 		// ポーリング開始
-		result = joystick->Poll();
+		joystick->Acquire();
+		Result result = joystick->Poll();
 	}
 }
 
@@ -165,6 +162,7 @@ void Input::Update()
 	mouse->GetDeviceState(sizeof(mouseState), &mouseState);
 
 	if (!joystick) { return; }
+	joystick->Acquire();
 	joyStatePre = joyState;
 	joystick->GetDeviceState(sizeof(joyState), &joyState);
 }
@@ -177,20 +175,34 @@ Input::PadState Input::GetPadState()
 	return PadState(joyState.lX, joyState.lY, joyState.lRx, joyState.lRy, joyState.lZ, dirKey);
 }
 
+Vector2 Input::PadState::LNormalize()
+{
+	auto padState = Input::GetInstance()->GetPadState();
+	Vector2 padStickVec = { (float)padState.lX, (float)padState.lY };
+	padStickVec /= (float)Input::PADSTICK_MAX_VAL;
+	return padStickVec;
+}
+
+Vector2 Input::PadState::RNormalize()
+{
+	auto padState = Input::GetInstance()->GetPadState();
+	Vector2 padStickVec = { (float)padState.rX, (float)padState.rY };
+	padStickVec /= (float)Input::PADSTICK_MAX_VAL;
+	return padStickVec;
+}
+
 Vector2 Input::ConLStick(const float spd)
 {
 	float unresponsiveRange = 200;
 	Vector2 vec;
 	// X軸について
-	if (GetPadState().lX > unresponsiveRange) { vec.x = (float)GetPadState().lX / 1000 * spd; }
-	else if (GetPadState().lX < -unresponsiveRange) { vec.x = (float)GetPadState().lX / 1000 * spd; }
+	if (std::abs(GetPadState().lX) > unresponsiveRange) { vec.x = (float)GetPadState().lX; }
 	else { vec.x = 0.0f; }
 	// Y軸について
-	if (GetPadState().lY > unresponsiveRange) { vec.y = -(float)GetPadState().lY / 1000 * spd; }
-	else if (GetPadState().lY < -unresponsiveRange) { vec.y = -(float)GetPadState().lY / 1000 * spd; }
+	if (std::abs(GetPadState().lY) > unresponsiveRange) { vec.y = -(float)GetPadState().lY; }
 	else { vec.y = 0.0f; }
 
-	return vec;
+	return Normalize(vec) * spd;
 }
 
 Vector2 Input::ConRStick(const float spd)
@@ -198,17 +210,11 @@ Vector2 Input::ConRStick(const float spd)
 	float unresponsiveRange = 200;
 	Vector2 vec;
 	// X軸について
-	if (GetPadState().rX > unresponsiveRange) { vec.x = (float)GetPadState().rX / 1000 * spd; }
-	else if (GetPadState().rX < -unresponsiveRange) { vec.x = (float)GetPadState().rX / 1000 * spd; }
+	if (std::abs(GetPadState().rX) > unresponsiveRange) { vec.x = (float)GetPadState().rX; }
 	else { vec.x = 0.0f; }
 	// Y軸について
-	if (GetPadState().rY > unresponsiveRange) { vec.y = -(float)GetPadState().rY / 1000 * spd; }
-	else if (GetPadState().rY < -unresponsiveRange) { vec.y = -(float)GetPadState().rY / 1000 * spd; }
+	if (std::abs(GetPadState().rY) > unresponsiveRange) { vec.y = -(float)GetPadState().rY; }
 	else { vec.y = 0.0f; }
 
-	return vec;
-}
-
-void Input::PadState::Normalize()
-{
+	return Normalize(vec) * spd;
 }

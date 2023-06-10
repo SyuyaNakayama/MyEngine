@@ -14,31 +14,19 @@ std::vector<ParticleGroup> ParticleManager::particleGroups;
 
 void ParticleManager::Initialize()
 {
-	// パイプライン初期化
-	InitializeGraphicsPipeline();
-	// 定数バッファ生成
-	CreateConstBuffer();
-}
-
-void ParticleManager::InitializeGraphicsPipeline()
-{
 	PipelineManager pipelineManager;
 	pipelineManager.LoadShaders(L"ParticleVS", L"ParticlePS", L"ParticleGS");
 	pipelineManager.AddInputLayout("POSITION", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineManager.AddInputLayout("TEXCOORD", DXGI_FORMAT_R32G32B32_FLOAT);
 	pipelineManager.InitDepthStencilState();
-	pipelineManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_ONE, D3D12_BLEND_ONE); // 光パーティクル
-	//pipelineManager.SetBlendDesc(D3D12_BLEND_OP_REV_SUBTRACT, D3D12_BLEND_ONE, D3D12_BLEND_ONE); // 闇パーティクル
+	pipelineManager.SetBlendDesc(D3D12_BLEND_OP_ADD, D3D12_BLEND_ONE, D3D12_BLEND_ONE);
 	pipelineManager.InitDSVFormat();
 	pipelineManager.SetDepthWriteMask(D3D12_DEPTH_WRITE_MASK_ZERO);
 	pipelineManager.SetPrimitiveTopologyType(D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT);
 	pipelineManager.AddRootParameter(RootParamType::CBV);
 	pipelineManager.AddRootParameter(RootParamType::DescriptorTable);
 	pipelineManager.CreatePipeline(pipelinestate, rootsignature);
-}
-
-void ParticleManager::CreateConstBuffer()
-{
+	
 	CreateBuffer(&constBuff, &constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 }
 
