@@ -9,6 +9,6 @@ private:
 	Quaternion rotQ = 1.0f;
 
 public:
-	void Initialize(Vector3 targetPos = { 0,0,0 }, float distance_ = 50);
+	void Initialize(Vector3 targetPos = { 0,0,0 }, float distance = 50);
 	void Update();
 };
