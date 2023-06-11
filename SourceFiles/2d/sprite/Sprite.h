@@ -41,14 +41,14 @@ private:
 	ConstBufferData* constMap = nullptr;
 	Vertex* vertMap = nullptr;
 	Matrix4 matWorld;
-	TextureData tex;
+	TextureData* tex;
 
 	void AdjustTextureSize();
 	void Initialize(uint32_t textureIndex);
 
 public:
 	static std::unique_ptr<Sprite> Create(const std::string& FILE_NAME);
-	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() { return tex.gpuHandle; }
+	D3D12_GPU_DESCRIPTOR_HANDLE GetGPUHandle() { return tex->gpuHandle; }
 	void Update();
 	void Draw();
 };

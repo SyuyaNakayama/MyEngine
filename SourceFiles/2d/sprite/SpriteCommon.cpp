@@ -9,7 +9,7 @@ string SpriteCommon::DEFAULT_TEXTURE_DIRECTORY_PATH = "Resources/";
 ComPtr<ID3D12RootSignature> SpriteCommon::rootSignature;
 ComPtr<ID3D12PipelineState> SpriteCommon::pipelineState;
 ComPtr<ID3D12DescriptorHeap> SpriteCommon::srvHeap;
-vector<TextureData> SpriteCommon::textures;
+list<TextureData> SpriteCommon::textures;
 
 SpriteCommon* SpriteCommon::GetInstance()
 {
@@ -50,9 +50,10 @@ uint32_t SpriteCommon::LoadTexture(const std::string& FILE_NAME, uint32_t mipLev
 	uint32_t textureIndex = textures.size();
 
 	// テクスチャの重複読み込みを検出
-	for (uint32_t i = 0; i < textureIndex; i++)
+	int i = 0;
+	for (auto itr = textures.begin(); itr != textures.end(); itr++)
 	{
-		if (textures[i].fileName.find(FILE_NAME) == string::npos) { continue; }
+		if (itr->fileName.find(FILE_NAME) == string::npos) { i++; continue; }
 		return i;
 	}
 

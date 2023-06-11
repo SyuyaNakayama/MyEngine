@@ -59,7 +59,7 @@ void ParticleGroup::Draw()
 	// デスクリプタヒープセット
 	spCommon->SetDescriptorHeaps();
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, spCommon->GetTextureData(textureIndex).gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(1, spCommon->GetTextureData(textureIndex)->gpuHandle);
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)AllParticleNum(), 1, 0, 0);
 }

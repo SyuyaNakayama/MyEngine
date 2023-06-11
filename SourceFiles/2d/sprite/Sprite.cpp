@@ -50,9 +50,9 @@ std::unique_ptr<Sprite> Sprite::Create(const std::string& FILE_NAME)
 
 void Sprite::AdjustTextureSize()
 {
-	assert(tex.buffer);
+	assert(tex->buffer);
 
-	D3D12_RESOURCE_DESC resDesc = tex.buffer->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = tex->buffer->GetDesc();
 
 	textureSize.x = static_cast<float>(resDesc.Width);
 	textureSize.y = static_cast<float>(resDesc.Height);
@@ -75,7 +75,7 @@ void Sprite::Update()
 	vertices[(size_t)VertexNumber::RB].pos = { right, bottom };
 	vertices[(size_t)VertexNumber::RT].pos = { right, top };
 
-	D3D12_RESOURCE_DESC resDesc = tex.buffer->GetDesc();
+	D3D12_RESOURCE_DESC resDesc = tex->buffer->GetDesc();
 
 	float tex_left = textureLeftTop.x / resDesc.Width;
 	float tex_right = (textureLeftTop.x + textureSize.x) / resDesc.Width;
@@ -105,7 +105,7 @@ void Sprite::Draw()
 
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	
-	cmdList->SetGraphicsRootDescriptorTable(1, tex.gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(1, tex->gpuHandle);
 
 	// 頂点バッファビューの設定コマンド
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
