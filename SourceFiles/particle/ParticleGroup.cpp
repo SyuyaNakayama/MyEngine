@@ -1,5 +1,4 @@
 #include "ParticleGroup.h"
-#include "SpriteCommon.h"
 #include "D3D12Common.h"
 
 void ParticleGroup::CreateVertexBuffer()
@@ -15,7 +14,7 @@ void ParticleGroup::CreateVertexBuffer()
 void ParticleGroup::Initialize(const std::string& textureName)
 {
 	// テクスチャ読み込み
-	textureIndex = SpriteCommon::GetInstance()->LoadTexture(textureName, 1);
+	texture = SpriteCommon::GetInstance()->LoadTexture(textureName, 1);
 	CreateVertexBuffer();
 }
 
@@ -59,7 +58,7 @@ void ParticleGroup::Draw()
 	// デスクリプタヒープセット
 	spCommon->SetDescriptorHeaps();
 	// シェーダリソースビューをセット
-	cmdList->SetGraphicsRootDescriptorTable(1, spCommon->GetTextureData(textureIndex)->gpuHandle);
+	cmdList->SetGraphicsRootDescriptorTable(1, texture->gpuHandle);
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)AllParticleNum(), 1, 0, 0);
 }

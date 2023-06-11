@@ -23,21 +23,15 @@ private:
 	static ComPtr<ID3D12RootSignature> rootSignature;
 	static ComPtr<ID3D12PipelineState> pipelineState;
 	static ComPtr<ID3D12DescriptorHeap> srvHeap;
-	static std::list<TextureData> textures;
+	static std::list<TextureData*> textures;
 
 	SpriteCommon() = default;
 public:
 	static SpriteCommon* GetInstance();
 	void Initialize();
-	uint32_t LoadTexture(const std::string& FILE_NAME, uint32_t mipLevels = MIP_LEVELS_DEFAULT);
+	TextureData* LoadTexture(const std::string& FILE_NAME, uint32_t mipLevels = MIP_LEVELS_DEFAULT);
 	static void PreDraw();
 	static void PostDraw() {}
-	static TextureData* GetTextureData(uint32_t index)
-	{
-		auto itr = textures.begin();
-		for (size_t i = 0; i < index; i++) { itr++; }
-		return &*itr;
-	}
 	static ID3D12DescriptorHeap* GetDescriptorHeap() { return srvHeap.Get(); }
 	void SetDescriptorHeaps();
 };

@@ -41,10 +41,10 @@ private:
 	ConstBufferData* constMap = nullptr;
 	Vertex* vertMap = nullptr;
 	Matrix4 matWorld;
-	TextureData* tex;
+	TextureData* tex = nullptr;
 
 	void AdjustTextureSize();
-	void Initialize(uint32_t textureIndex);
+	void Initialize();
 
 public:
 	static std::unique_ptr<Sprite> Create(const std::string& FILE_NAME);

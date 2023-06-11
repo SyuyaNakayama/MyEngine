@@ -2,6 +2,7 @@
 #include "DiffuseParticle.h"
 #include "DirectionalParticle.h"
 #include "TrackParticle.h"
+#include "SpriteCommon.h"
 #include <string>
 #include <wrl.h>
 #include <d3dx12.h>
@@ -16,10 +17,10 @@ private:
 		Vector3 pos; // xyz座標
 		float scale; // スケール
 	};
-	
+
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	
+
 	static const int PARTICLE_MAX = 384; // パーティクル最大数
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff;
@@ -27,7 +28,7 @@ private:
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView;
 	// テクスチャインデックス
-	uint32_t textureIndex = 0;
+	TextureData* texture = nullptr;
 	// 拡散するパーティクル
 	DiffuseParticle diffuseParticle;
 	// 始点から終点へ向かうパーティクル
@@ -35,7 +36,7 @@ private:
 	TrackParticle trackParticle;
 
 	void CreateVertexBuffer(); // 頂点バッファ生成
-	size_t AllParticleNum() { return diffuseParticle.GetParticles().size() + directionalParticle.GetParticles().size()+ trackParticle.GetParticles().size(); }
+	size_t AllParticleNum() { return diffuseParticle.GetParticles().size() + directionalParticle.GetParticles().size() + trackParticle.GetParticles().size(); }
 	bool IsParticleMax() { return AllParticleNum() >= PARTICLE_MAX; }
 
 public:

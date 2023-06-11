@@ -1,6 +1,5 @@
 #include "TestScene.h"
 #include "SpriteCommon.h"
-std::unique_ptr<Model> TestScene::models[2];
 
 void TestScene::Initialize()
 {

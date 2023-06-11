@@ -15,7 +15,7 @@ Matrix4 OrthoGraphic(const Vector2& windowSize)
 
 const Matrix4 Sprite::matProj = OrthoGraphic(WindowsAPI::WIN_SIZE);
 
-void Sprite::Initialize(uint32_t textureIndex)
+void Sprite::Initialize()
 {
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * vertices.size());
@@ -36,7 +36,6 @@ void Sprite::Initialize(uint32_t textureIndex)
 	CreateBuffer(constBuff.GetAddressOf(),
 		&constMap, (sizeof(ConstBufferData) + 0xff) & ~0xff);
 
-	tex = SpriteCommon::GetTextureData(textureIndex);
 	AdjustTextureSize();
 	size = textureSize;
 }
@@ -44,7 +43,8 @@ void Sprite::Initialize(uint32_t textureIndex)
 std::unique_ptr<Sprite> Sprite::Create(const std::string& FILE_NAME)
 {
 	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
-	sprite->Initialize(SpriteCommon::GetInstance()->LoadTexture(FILE_NAME));
+	sprite->tex = SpriteCommon::GetInstance()->LoadTexture(FILE_NAME);
+	sprite->Initialize();
 	return sprite;
 }
 
