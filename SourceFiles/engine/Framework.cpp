@@ -1,11 +1,11 @@
 ﻿#include "Framework.h"
-#include "SpriteCommon.h"
+#include "Sprite.h"
 
 void Framework::Initialize()
 {
 	wAPI->Initialize(L"燈火の迷宮");
 	dxCommon->Initialize();
-	SpriteCommon::GetInstance()->Initialize();
+	Sprite::StaticInitialize();
 	input->Initialize();
 	sceneManager->Initialize();
 }

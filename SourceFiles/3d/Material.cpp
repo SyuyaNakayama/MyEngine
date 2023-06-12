@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include "D3D12Common.h"
-#include "SpriteCommon.h"
 #include "Mesh.h"
 using namespace std;
 
@@ -83,6 +82,5 @@ void Material::Draw()
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	cmdList->SetGraphicsRootConstantBufferView(2, constBuffer->GetGPUVirtualAddress());
 	// シェーダリソースビューをセット
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
 	cmdList->SetGraphicsRootDescriptorTable(0, sprite->GetGPUHandle());
 }

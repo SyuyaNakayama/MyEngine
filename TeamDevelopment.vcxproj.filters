@@ -189,9 +189,6 @@
     <ClCompile Include="SourceFiles\2d\sprite\SpriteAnimation.cpp">
       <Filter>ソース ファイル\Engine\2d\sprite</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\2d\sprite\SpriteCommon.cpp">
-      <Filter>ソース ファイル\Engine\2d\sprite</Filter>
-    </ClCompile>
     <ClCompile Include="SourceFiles\engine\main.cpp">
       <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
@@ -333,9 +330,6 @@
       <Filter>ソース ファイル\Engine\2d\sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\2d\sprite\SpriteAnimation.h">
-      <Filter>ソース ファイル\Engine\2d\sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="SourceFiles\2d\sprite\SpriteCommon.h">
       <Filter>ソース ファイル\Engine\2d\sprite</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\audio\PointAudio.h">

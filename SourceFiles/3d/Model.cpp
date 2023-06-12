@@ -1,6 +1,6 @@
 #include "Model.h"
 #include "D3D12Common.h"
-#include "SpriteCommon.h"
+#include "Sprite.h"
 using namespace Microsoft::WRL;
 using namespace std;
 
@@ -70,7 +70,7 @@ void Model::PreDraw()
 	// カメラ
 	cmdList->SetGraphicsRootConstantBufferView(4, viewProjection->constBuffer->GetGPUVirtualAddress());
 	// デスクリプタヒープセット
-	SpriteCommon::GetInstance()->SetDescriptorHeaps();
+	Sprite::SetDescriptorHeaps();
 }
 
 void Model::Update()

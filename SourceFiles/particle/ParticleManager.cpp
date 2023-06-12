@@ -1,6 +1,6 @@
 ﻿#include <random>
 #include "ParticleManager.h"
-#include "SpriteCommon.h"
+#include "Sprite.h"
 #include "D3D12Common.h"
 #include "Model.h"
 using namespace Microsoft::WRL;

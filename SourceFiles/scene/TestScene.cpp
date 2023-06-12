@@ -1,5 +1,5 @@
 #include "TestScene.h"
-#include "SpriteCommon.h"
+#include "Sprite.h"
 
 void TestScene::Initialize()
 {
@@ -47,10 +47,10 @@ void TestScene::Update()
 
 void TestScene::Draw()
 {
-	SpriteCommon::PreDraw();
+	Sprite::PreDraw();
 	sprites[0]->Draw();
 	sprites[1]->Draw();
-	SpriteCommon::PostDraw();
+	Sprite::PostDraw();
 
 	Model::PreDraw();
 	models[0]->Draw(worldTransforms[0]);

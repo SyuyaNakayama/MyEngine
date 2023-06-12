@@ -14,7 +14,7 @@ void ParticleGroup::CreateVertexBuffer()
 void ParticleGroup::Initialize(const std::string& textureName)
 {
 	// テクスチャ読み込み
-	texture = SpriteCommon::GetInstance()->LoadTexture(textureName, 1);
+	texture = Sprite::LoadTexture(textureName, 1);
 	CreateVertexBuffer();
 }
 
@@ -53,10 +53,8 @@ void ParticleGroup::Draw()
 	ID3D12GraphicsCommandList* cmdList = DirectXCommon::GetInstance()->GetCommandList();
 	// 頂点バッファの設定
 	cmdList->IASetVertexBuffers(0, 1, &vbView);
-	// デスクリプタヒープの配列
-	SpriteCommon* spCommon = SpriteCommon::GetInstance();
 	// デスクリプタヒープセット
-	spCommon->SetDescriptorHeaps();
+	Sprite::SetDescriptorHeaps();
 	// シェーダリソースビューをセット
 	cmdList->SetGraphicsRootDescriptorTable(1, texture->gpuHandle);
 	// 描画コマンド

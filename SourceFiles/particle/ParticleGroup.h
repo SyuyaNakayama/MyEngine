@@ -2,7 +2,7 @@
 #include "DiffuseParticle.h"
 #include "DirectionalParticle.h"
 #include "TrackParticle.h"
-#include "SpriteCommon.h"
+#include "Sprite.h"
 #include <string>
 #include <wrl.h>
 #include <d3dx12.h>

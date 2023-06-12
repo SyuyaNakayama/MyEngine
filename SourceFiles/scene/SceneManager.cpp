@@ -1,5 +1,5 @@
 #include "SceneManager.h"
-#include "SpriteCommon.h"
+#include "Sprite.h"
 #include "CollisionManager.h"
 
 BaseScene::BaseScene() { sceneManager = SceneManager::GetInstance(); }
@@ -46,9 +46,9 @@ void SceneManager::Draw()
 {
 	scene_->Draw();
 	if (!fadeManager_.IsFade()) { return; }
-	SpriteCommon::PreDraw();
+	Sprite::PreDraw();
 	fadeManager_.Draw();
-	SpriteCommon::PostDraw();
+	Sprite::PostDraw();
 }
 
 void SceneManager::ChangeScene(Scene nextScene, bool isUseFade)
