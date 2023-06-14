@@ -78,11 +78,11 @@
     <Filter Include="ソース ファイル\Engine\Input">
       <UniqueIdentifier>{fa885c07-fe8d-4879-a7a7-e2bbf42afdc2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Application\Objects">
-      <UniqueIdentifier>{add36e36-d459-432f-a0ce-f0579e636034}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Application\GameScenes">
       <UniqueIdentifier>{4457f309-a144-4242-a6fc-6d7400a73bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Engine\Skydome">
+      <UniqueIdentifier>{add36e36-d459-432f-a0ce-f0579e636034}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -229,16 +229,13 @@
       <Filter>ソース ファイル\Engine\Particle</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\objects\Skydome.cpp">
-      <Filter>ソース ファイル\Application\Objects</Filter>
+      <Filter>ソース ファイル\Engine\Skydome</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\engine\DirectXCommon.cpp">
       <Filter>ソース ファイル\Engine\DirectX</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\base\D3D12Common.cpp">
       <Filter>ソース ファイル\Engine\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="SourceFiles\scene\BaseScene.cpp">
-      <Filter>ソース ファイル\Engine\Scene</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\scene\SceneManager.cpp">
       <Filter>ソース ファイル\Engine\Scene</Filter>
@@ -255,7 +252,7 @@
     <ClCompile Include="SourceFiles\base\MyGame.cpp">
       <Filter>ソース ファイル\Application</Filter>
     </ClCompile>
-    <ClCompile Include="SourceFiles\scene\TestScene.cpp">
+    <ClCompile Include="SourceFiles\scene\GamePlayScene.cpp">
       <Filter>ソース ファイル\Application\GameScenes</Filter>
     </ClCompile>
     <ClCompile Include="SourceFiles\scene\SceneFactory.cpp">
@@ -369,7 +366,7 @@
       <Filter>ソース ファイル\Engine\Particle</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\objects\Skydome.h">
-      <Filter>ソース ファイル\Application\Objects</Filter>
+      <Filter>ソース ファイル\Engine\Skydome</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\engine\DirectXCommon.h">
       <Filter>ソース ファイル\Engine\DirectX</Filter>
@@ -398,7 +395,7 @@
     <ClInclude Include="SourceFiles\base\MyGame.h">
       <Filter>ソース ファイル\Application</Filter>
     </ClInclude>
-    <ClInclude Include="SourceFiles\scene\TestScene.h">
+    <ClInclude Include="SourceFiles\scene\GamePlayScene.h">
       <Filter>ソース ファイル\Application\GameScenes</Filter>
     </ClInclude>
     <ClInclude Include="SourceFiles\scene\Scene.h">

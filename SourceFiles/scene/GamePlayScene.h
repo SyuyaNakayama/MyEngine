@@ -3,7 +3,7 @@
 #include "Model.h"
 #include "ParticleManager.h"
 
-class TestScene : public BaseScene
+class GamePlayScene : public BaseScene
 {
 	std::unique_ptr<Model> models[2];
 	WorldTransform worldTransforms[3];

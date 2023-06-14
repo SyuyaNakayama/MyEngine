@@ -199,10 +199,9 @@
     <ClCompile Include="SourceFiles\collider\Collider.cpp" />
     <ClCompile Include="SourceFiles\collider\CollisionManager.cpp" />
     <ClCompile Include="SourceFiles\physics\Kinematics.cpp" />
-    <ClCompile Include="SourceFiles\scene\BaseScene.cpp" />
     <ClCompile Include="SourceFiles\scene\SceneFactory.cpp" />
     <ClCompile Include="SourceFiles\scene\SceneManager.cpp" />
-    <ClCompile Include="SourceFiles\scene\TestScene.cpp" />
+    <ClCompile Include="SourceFiles\scene\GamePlayScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SourceFiles\3d\Material.h" />
@@ -252,7 +251,7 @@
     <ClInclude Include="SourceFiles\scene\Scene.h" />
     <ClInclude Include="SourceFiles\scene\SceneFactory.h" />
     <ClInclude Include="SourceFiles\scene\SceneManager.h" />
-    <ClInclude Include="SourceFiles\scene\TestScene.h" />
+    <ClInclude Include="SourceFiles\scene\GamePlayScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj">

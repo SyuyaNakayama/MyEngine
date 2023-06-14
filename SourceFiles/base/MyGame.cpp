@@ -6,11 +6,9 @@
 void MyGame::Initialize()
 {
 	Framework::Initialize();
-	sceneManager->ChangeScene(Scene::Test, false);
+	sceneManager->ChangeScene(Scene::Play, false);
 	Model::StaticInitialize();
 	ParticleManager::Initialize();
-	ParticleManager::AddParticleGroup("Particle.png");
-	ParticleManager::AddParticleGroup("Particle2.png");
 	ImGuiManager::Initialize();
 	Audio::StaticInitialize();
 	postEffect = std::make_unique<PostEffect>();
